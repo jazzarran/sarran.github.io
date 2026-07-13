@@ -1,50 +1,133 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Page</title>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      max-width: 640px;
-      margin: 80px auto;
-      padding: 0 24px;
-      line-height: 1.6;
-      color: #222;
-    }
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 0.2em;
-    }
-    .badge {
-      display: inline-block;
-      background: #eef6ff;
-      color: #1a5fb4;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      margin-bottom: 1.5em;
-    }
-    code {
-      background: #f4f4f4;
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sarran Swamy — Platforms | Engineering | Architecture | Health Tech | Technology Leadership</title>
+<meta name="description" content="Sarran Swamy — Platforms, Engineering, Architecture, Health Tech, Technology Leadership. Projects, study material, cheat sheets, and engineering resources.">
+<style>
+:root{
+  --navy:#16324f; --navy-dark:#0f2438; --blue:#2563a8; --blue-light:#eaf1f8;
+  --text:#2b3440; --muted:#5f6b7a; --bg:#f6f8fa; --panel:#ffffff; --border:#dde4ec;
+  --shadow:0 1px 3px rgba(22,50,79,.08), 0 4px 14px rgba(22,50,79,.06);
+}
+*{box-sizing:border-box; margin:0}
+body{font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.6}
+a{color:var(--blue); text-decoration:none}
+.container{max-width:1040px; margin:0 auto; padding:0 1.5rem}
+
+/* Header */
+.hero{background:linear-gradient(180deg, var(--navy) 0%, var(--navy-dark) 100%); color:#fff; padding:1.1rem 0 1.2rem}
+.navrow{display:flex; justify-content:flex-end; flex-wrap:wrap; margin-bottom:.5rem}
+.hero h1{font-size:1.55rem; font-weight:700; letter-spacing:.01em; display:inline-block; border-bottom:3px solid #5aa9e6; padding-bottom:.3rem}
+.tags{display:flex; gap:.45rem; flex-wrap:wrap; margin-top:.6rem}
+.tags span{background:rgba(255,255,255,.12); color:#d7e3f0; font-size:.78rem; padding:.14rem .75rem; border-radius:999px}
+.hero p.tagline{max-width:680px; margin-top:.7rem; color:#c3d3e2; font-size:.92rem}
+nav a{color:#d7e3f0; font-size:.92rem; margin-left:1.4rem; padding-bottom:.2rem; border-bottom:2px solid transparent}
+nav a:hover{color:#fff; border-bottom-color:#9fc3e8}
+.social{display:flex; gap:.9rem; align-items:center; margin-top:.8rem}
+.social a{display:inline-flex; align-items:center; justify-content:center; width:20px; color:#c3d3e2}
+.social a:hover{color:#fff}
+.social svg{width:20px; height:20px}
+
+/* Cards */
+.section-title{font-size:.85rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--muted); margin:2.8rem 0 1.2rem}
+.grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.2rem}
+.card{background:var(--panel); border:1px solid var(--border); border-top:3px solid var(--navy);
+  border-radius:8px; box-shadow:var(--shadow); padding:1.5rem 1.5rem 1.3rem; display:flex; flex-direction:column;
+  transition:transform .15s, box-shadow .15s}
+.card:hover{transform:translateY(-3px); box-shadow:0 6px 20px rgba(22,50,79,.14)}
+.card .icon{width:42px; height:42px; border-radius:8px; background:var(--blue-light); color:var(--navy);
+  display:flex; align-items:center; justify-content:center; margin-bottom:.9rem}
+.card .icon svg{width:22px; height:22px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+.card h2{font-size:1.12rem; color:var(--navy)}
+.card p{font-size:.92rem; color:var(--muted); margin:.45rem 0 1rem; flex:1}
+.card .links a{display:block; font-size:.9rem; font-weight:600; margin-top:.3rem}
+.card .links a::after{content:" →"}
+.card .links .sub{font-weight:400; color:var(--text)}
+
+/* Footer */
+footer{margin-top:4rem; background:var(--navy-dark); color:#93a7ba; font-size:.85rem}
+.footrow{display:flex; align-items:center; justify-content:space-between; padding:1.4rem 0; flex-wrap:wrap; gap:.6rem}
+footer a{color:#c3d3e2}
+footer a:hover{color:#fff}
+
+@media (max-width:640px){
+  .hero h1{font-size:1.5rem}
+  nav a{margin-left:.9rem}
+}
+</style>
 </head>
 <body>
-  <span class="badge">✅ It's live!</span>
-  <h1>Hello, world!</h1>
-  <p>
-    If you can see this page, your static hosting setup is working correctly.
-    This file was uploaded as <code>test-page.html</code> and rendered by
-    whichever host you deployed it to.
-  </p>
-  <p>
-    Once you've confirmed this works, replace this file with your actual
-    study material and re-deploy.
-  </p>
+
+<header class="hero">
+  <div class="container">
+    <nav class="navrow">
+      <a href="projects.html">Projects</a>
+      <a href="study-material.html">Study Material</a>
+      <a href="cheat-sheets.html">Cheat Sheets</a>
+      <a href="resources.html">Resources</a>
+    </nav>
+    <h1>Sarran Swamy</h1>
+    <div class="tags">
+      <span>Platforms</span><span>Engineering</span><span>Architecture</span><span>Health Tech</span><span>Technology Leadership</span>
+    </div>
+    <p class="tagline">Building and leading engineering teams that deliver scalable, cloud-native systems.
+    A curated collection of my projects, certification study notes, quick-reference material, and recommended resources.</p>
+    <div class="social">
+      <a href="https://www.linkedin.com/in/sarran/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      <a href="mailto:sarran.swamy@gmail.com" aria-label="Email" title="Email">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg></a>
+      <a href="https://github.com/jazzarran" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="section-title">Explore</div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M3 7h5l2-2h11v14H3z"/><path d="M3 11h18"/></svg></div>
+      <h2>Projects</h2>
+      <p>Selected engineering projects and architecture work — system designs, platform builds, and technical case studies.</p>
+      <div class="links"><a href="projects.html">View projects</a></div>
+    </div>
+
+    <div class="card">
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M4 19V5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19a2 2 0 0 0 2 2h13"/></svg></div>
+      <h2>Study Material</h2>
+      <p>In-depth notes and study guides for certifications and core engineering topics.</p>
+      <div class="links"><a href="study-material.html">All study material</a></div>
+    </div>
+
+    <div class="card">
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><path d="M14 3h7v7"/><path d="M21 3l-9 9"/></svg></div>
+      <h2>Cheat Sheets</h2>
+      <p>Condensed one-page references — commands, patterns, and key facts for quick recall.</p>
+      <div class="links"><a href="cheat-sheets.html">Browse cheat sheets</a></div>
+    </div>
+
+    <div class="card">
+      <div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></svg></div>
+      <h2>Resources</h2>
+      <p>Recommended books, courses, tools, and articles for engineers and engineering leaders.</p>
+      <div class="links"><a href="resources.html">See resources</a></div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container footrow">
+    <div>© <span id="yr"></span> Sarran Swamy</div>
+  </div>
+</footer>
+
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
 </body>
 </html>
