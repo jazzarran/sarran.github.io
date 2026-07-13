@@ -39,8 +39,10 @@ nav a:hover{color:#fff; border-bottom-color:#9fc3e8}
   border-radius:8px; box-shadow:var(--shadow); padding:1rem 1.1rem .9rem; display:flex; flex-direction:column;
   transition:transform .15s, box-shadow .15s}
 .card:hover{transform:translateY(-3px); box-shadow:0 6px 20px rgba(22,50,79,.14)}
-.card .icon{width:32px; height:32px; border-radius:7px; background:var(--blue-light); color:var(--navy);
-  display:flex; align-items:center; justify-content:center; margin-bottom:.6rem}
+.card{position:relative}
+.card .icon{width:30px; height:30px; border-radius:7px; background:var(--blue-light); color:var(--navy);
+  display:flex; align-items:center; justify-content:center; position:absolute; top:.85rem; right:.9rem}
+.card h2{padding-right:2.4rem}
 .card .icon svg{width:17px; height:17px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
 .card h2{font-size:1rem; color:var(--navy)}
 .card p{font-size:.84rem; color:var(--muted); margin:.3rem 0 .6rem; flex:1; line-height:1.45}
@@ -48,11 +50,6 @@ nav a:hover{color:#fff; border-bottom-color:#9fc3e8}
 .card .links a::after{content:" →"}
 .card .links .sub{font-weight:400; color:var(--text)}
 
-/* Footer */
-footer{margin-top:2rem; background:var(--navy-dark); color:#93a7ba; font-size:.85rem}
-.footrow{display:flex; align-items:center; justify-content:space-between; padding:1.4rem 0; flex-wrap:wrap; gap:.6rem}
-footer a{color:#c3d3e2}
-footer a:hover{color:#fff}
 
 @media (max-width:640px){
   .hero h1{font-size:1.5rem}
@@ -121,12 +118,5 @@ footer a:hover{color:#fff}
   </div>
 </main>
 
-<footer>
-  <div class="container footrow">
-    <div>© <span id="yr"></span> Sarran Swamy</div>
-  </div>
-</footer>
-
-<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
 </body>
 </html>
