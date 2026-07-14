@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS AI Practitioner Study Guide</title>
+<meta name="description" content="AWS AI Practitioner certification study notes — ML basics, Bedrock, SageMaker, prompt engineering, responsible AI.">
+<style>
+:root{
+  --bg:#f0f7fc; --panel:#ffffff; --text:#1c2430; --muted:#54677a; --border:#d6e6f2;
+  --accent:#2e8fd4; --accent-soft:#e3f2fc; --link:#1b6fb5; --code-bg:#eaf3fa;
+  --mark:#ffe58a; --shadow:0 1px 3px rgba(30,80,130,.08);
+}
+[data-theme="dark"]{
+  --bg:#0f1a24; --panel:#17252f; --text:#dde8f0; --muted:#8aa0b3; --border:#24394a;
+  --accent:#5db4ec; --accent-soft:#153349; --link:#6cb8ee; --code-bg:#1c2e3d;
+  --mark:#8a6d1a; --shadow:0 1px 3px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:1rem}
+body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.55; font-size:15.5px}
+a{color:var(--link); text-decoration:none}
+
+/* Layout */
+.wrap{display:flex; min-height:100vh}
+.sidebar{width:280px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto;
+  background:var(--panel); border-right:1px solid var(--border); padding:1rem .9rem 2rem; scrollbar-width:thin}
+main{flex:1; min-width:0; max-width:980px; padding:1.5rem 2.2rem 5rem}
+
+/* Sidebar */
+.brand{font-weight:700; font-size:1.02rem; margin:.2rem 0 1rem; display:flex; align-items:center; gap:.5rem}
+.brand .awslogo{color:var(--accent); font-size:1.25rem}
+.searchbox{position:relative; margin-bottom:.6rem}
+.searchbox input{width:100%; padding:.5rem .7rem .5rem 2rem; border:1px solid var(--border); border-radius:8px;
+  background:var(--bg); color:var(--text); font-size:.9rem; outline:none}
+.searchbox input:focus{border-color:var(--accent)}
+.searchbox svg{position:absolute; left:.6rem; top:50%; transform:translateY(-50%); width:14px; height:14px; stroke:var(--muted)}
+.searchmeta{font-size:.75rem; color:var(--muted); min-height:1.1em; margin-bottom:.5rem}
+.navgroup{margin-bottom:.35rem}
+.navsec{display:block; font-weight:700; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--text); padding:.4rem .5rem .2rem}
+.navsec:hover{color:var(--accent)}
+.navtopics{border-left:2px solid var(--border); margin-left:.55rem}
+.navtopic{display:block; padding:.18rem .6rem; font-size:.86rem; color:var(--muted); border-left:2px solid transparent; margin-left:-2px}
+.navtopic:hover{color:var(--text)}
+.navtopic.active{color:var(--accent); border-left-color:var(--accent); font-weight:600}
+.sidefoot{margin-top:1rem; display:flex; gap:.4rem; flex-wrap:wrap}
+.btn{border:1px solid var(--border); background:var(--panel); color:var(--muted); border-radius:7px;
+  padding:.3rem .6rem; font-size:.75rem; cursor:pointer}
+.btn:hover{color:var(--text); border-color:var(--accent)}
+
+/* Header row */
+.pagehead{display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:.3rem}
+.pagehead h1{font-size:1.55rem; margin:0}
+.pagehead .sub{color:var(--muted); font-size:.9rem; margin:0 0 1.2rem}
+#themeToggle{font-size:1rem; line-height:1; padding:.35rem .55rem}
+
+/* Sections & topics */
+.section{margin-top:1.6rem}
+.sechead{display:flex; align-items:center; gap:.5rem; font-size:1.18rem; letter-spacing:.04em; text-transform:uppercase;
+  color:var(--accent); border-bottom:2px solid var(--accent); padding-bottom:.3rem; cursor:pointer; user-select:none; margin:0 0 .9rem}
+.sechead .chev{margin-left:auto; transform:rotate(90deg); transition:transform .18s; font-size:1.3rem; color:var(--muted)}
+.section.collapsed .chev{transform:rotate(0deg)}
+.section.collapsed .secbody{display:none}
+.topic{background:var(--panel); border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow);
+  padding:1rem 1.25rem; margin-bottom:1rem}
+.topic h3{margin:.1rem 0 .6rem; font-size:1.02rem; display:flex; align-items:baseline; gap:.6rem; flex-wrap:wrap}
+.topic h3 .subtitle{font-weight:400; font-size:.82rem; color:var(--muted)}
+.topic.hidden{display:none}
+
+/* Content */
+ul.notes{margin:.3rem 0; padding-left:1.15rem}
+ul.notes li{margin:.28rem 0}
+ul.notes li::marker{color:var(--accent)}
+ul.sub{margin:.3rem 0 .3rem .5rem; padding-left:1.3rem}
+ul.sub li{margin:.15rem 0; font-size:.95em}
+ul.sub li::marker{color:var(--muted)}
+p.plain{margin:.45rem 0}
+.topic h4{font-size:.92rem; margin:.9rem 0 .3rem; color:var(--accent)}
+.cont{color:var(--muted); font-size:.92em; margin:.15rem 0 0 .1rem}
+p.cont{margin:.3rem 0 .3rem 1.15rem}
+ol.steps{margin:.3rem 0; padding-left:1.4rem}
+ol.steps li{margin:.22rem 0}
+.sublabel{font-weight:700; font-size:.85rem; margin:.7rem 0 .15rem; color:var(--text)}
+pre.diagram{background:var(--code-bg); border:1px solid var(--border); border-radius:8px; padding:.6rem .8rem;
+  font-size:.82rem; overflow-x:auto; margin:.5rem 0}
+.tablewrap{overflow-x:auto; margin:.6rem 0}
+table{border-collapse:collapse; width:100%; font-size:.88rem}
+th,td{border:1px solid var(--border); padding:.45rem .6rem; text-align:left; vertical-align:top}
+th{background:var(--accent-soft); color:var(--text); font-weight:700}
+[data-theme="dark"] th{background:var(--accent-soft)}
+tbody tr:nth-child(even){background:color-mix(in srgb, var(--border) 25%, transparent)}
+figure{margin:.8rem 0}
+figure img{max-width:100%; border:1px solid var(--border); border-radius:8px; background:#fff}
+mark{background:var(--mark); color:inherit; border-radius:2px; padding:0 1px}
+
+/* Back to top */
+#toTop{position:fixed; right:1.2rem; bottom:1.2rem; width:38px; height:38px; border-radius:50%;
+  border:1px solid var(--border); background:var(--panel); color:var(--muted); font-size:1.1rem; cursor:pointer;
+  box-shadow:var(--shadow); display:none}
+#toTop:hover{color:var(--accent)}
+
+/* Mobile */
+#menuBtn{display:none}
+@media (max-width:860px){
+  .sidebar{position:fixed; z-index:20; left:0; top:0; transform:translateX(-100%); transition:transform .2s; width:270px}
+  .sidebar.open{transform:none; box-shadow:0 0 30px rgba(0,0,0,.3)}
+  main{padding:1rem 1rem 4rem}
+  #menuBtn{display:inline-block; position:fixed; z-index:21; left:.8rem; bottom:1.2rem; width:42px; height:42px;
+    border-radius:50%; font-size:1.15rem; box-shadow:var(--shadow)}
+}
+@media print{
+  .sidebar,#toTop,#menuBtn,#themeToggle{display:none!important}
+  main{max-width:none; padding:0}
+  .topic{break-inside:avoid; box-shadow:none}
+  .section.collapsed .secbody{display:block}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="sidebar" id="sidebar">
+  <div class="brand"><span class="awslogo">▲</span> AWS Study Guide</div>
+  <div class="searchbox">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input type="search" id="search" placeholder="Search notes…  ( / )" autocomplete="off">
+  </div>
+  <div class="searchmeta" id="searchmeta"></div>
+  <div class="navgroup"><a class="navsec" href="#sec-basics">Basics</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-aws-bedrock">AWS Bedrock</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-prompt-engineering">Prompt Engineering</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-amazon-q">Amazon Q</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-aws-managed-services">AWS Managed Services</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-aws-sagemaker">AWS SageMaker</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-responsible-ai">Responsible AI</a><div class="navtopics"><a class="navtopic" href="#sec-responsible-ai-security-compliance-governance">Security, Compliance &amp; Governance</a></div></div><div class="navgroup"><a class="navsec" href="#sec-auxiliary-aws-services-for-ai">Auxiliary AWS Services for AI</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-miscellaneous">Miscellaneous</a><div class="navtopics"></div></div>
+  <div class="sidefoot">
+    <button class="btn" id="expandAll">Expand all</button>
+    <button class="btn" id="collapseAll">Collapse all</button>
+  </div>
+</nav>
+<main>
+  <div class="pagehead">
+    <h1>AWS AI Practitioner Study Guide</h1>
+    <button class="btn" id="themeToggle" title="Toggle theme">◐</button>
+  </div>
+  <p class="sub">Condensed exam notes — ML fundamentals, Bedrock, SageMaker, Amazon Q, prompt engineering and more. Use the sidebar or press <b>/</b> to search.</p>
+  <section id="sec-basics" class="section"><h2 class="sechead" tabindex="0">Basics<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-basics-notes"><ul class="notes"><li>Artificial Intelligence is a branch of computer science focused on creating systems and machines that can perform tasks typically requiring human intelligence. These tasks include –</li></ul><ul class="sub"><li>  Learning (from data or experience)</li><li>  Problem Solving / Making Decisions</li><li>  Language understanding (processing human language)</li><li>  Perception (recognizing speech, images, or objects)</li><li>  Interaction (responding conversationally)</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image1.jpg" alt="Diagram"></figure><ul class="notes"><li>Machine learning (ML) is a branch of artificial intelligence (AI) and computer science focused on developing algorithms that enable computers to learn from data, identify patterns, and make decisions or predictions with minimal human intervention</li></ul><p class="plain">AI vs ML. AI -&gt; Broad: Encompasses all efforts to mimic or surpass human intelligence. ML -&gt; Narrow: Focused on learning from data</p><ul class="notes"><li>Deep Learning is a specialized subset of machine learning that uses multilayered artificial neural networks—often called deep neural networks—to model and solve complex problems by simulating the way the human brain processes information.</li><li>Generative AI is a branch of artificial intelligence focused on creating new content—such as text, images, audio, video, code, and more—by learning patterns from large datasets and then generating original outputs based on user prompts or instructions.</li></ul><p class="plain">Think of Gen AI as taking Deep Learning and 1) adding multiple neural networks and 2) training with insanely vast amount of data. They are more multi-purpose than Deep Learning models. And in many cases, the multi-purpose GenAI Foundation models and fine-tuned back to satisfy specific usecases.</p><ul class="notes"><li>Foundation Models are large deep learning neural networks trained on massive, diverse datasets, often unlabeled, that serve as a general-purpose base for many AI applications. Unlike traditional machine learning models designed for specific tasks, foundation models are adaptable and capable of performing a wide variety of tasks such as natural language processing, image generation, question answering, and more, often based on input prompts.</li><li>Large Language Models (LLMs) (a.k.a Transformer Models) are advanced artificial intelligence systems designed to understand, generate, and manipulate human language. They are built using deep learning techniques—specifically, transformer neural network architectures—and are trained on massive datasets containing billions or even trillions of words.</li></ul><p class="plain">Transformer models are a class of neural network architectures designed to process sequential data—such as text, speech, or even DNA sequences—by learning the context and relationships between elements in the sequence. Unlike earlier models like recurrent neural networks (RNNs), transformers rely entirely on a mechanism called attention (specifically, self-attention) to capture dependencies between all elements in a sequence.</p><ul class="notes"><li>Top LLMS (2025)</li></ul><ul class="sub"><li>ChatGPT (OpenAI)</li><li>Gemini (Google</li><li>Llama (Meta)</li><li>Claude (Anthropic)</li><li>Groq (xAI)</li><li>Bert</li><li>Mistral</li><li>Hugging Face</li><li>AWS Bedrock (Nova and Titan)</li><li>Azure AI</li></ul><p class="plain">Others:</p><ul class="sub"><li>Diffusion Model (Eg. Stable Diffusion Model):</li><li>generate images</li><li>Multi-Modal Models (eg: GPT-4o)</li><li>process text / images / video</li></ul><ul class="notes"><li>Some ML Terms to know –</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image2.jpg" alt="Diagram"></figure><ul class="notes"><li>ML Algorithms:</li></ul><ul class="sub"><li>Supervised</li><li>Logistic / Linear Regression</li><li>Classification</li><li>Decision Trees</li><li>Un-Supervised</li><li>Clustering</li><li>Association Rule Learning</li><li>Anomaly Detection</li><li>Semi-Supervised</li><li>Fraud Detection</li><li>Sentiment Analysis</li><li>Document Classification</li><li>Self-Supervised</li><li>Reinforcement Learning</li></ul><p class="plain">Detailed…</p><ul class="sub"><li>Supervised Learning (needs Labeled Data for training):</li><li>Regression: Used to predict a numeric value based on input data – the output variable is continuous (i.e. meaning the result can take any value in a range)</li><li>Classification: Used to predict the categorical label of the input data – output is discrete (distinct values/categories)</li><li>Binary Classification: eg: spam or not spam</li><li>Multiclass Classification: many categories</li><li>Note: KNN Model (K-Nearest Neighbors) typically used for Classification.</li><li>Un-Supervised Learning (Can work with Un-labeled Data): Unsupervised learning is a type of machine learning where algorithms analyze and draw inferences from data that has no labels or predefined categories.</li><li>Clustering: Clustering is an unsupervised learning technique that organizes and groups similar data points, objects, or observations into clusters based on shared characteristics or patterns—without the need for predefined labels. Technique commonly used -&gt; K-Means Clustering</li><li>Association Rule Learning: Association rule learning is a rule-based machine learning method used to identify interesting relationships, patterns, or associations between variables in large datasets, particularly in transactional databases; Common example -&gt; Market Basket Analysis (find products frequently bought together / if someone buys bread then they will buy butter): Technique -&gt; Apriori Algorithm</li><li>Anomaly Detection: Identify transactions that deviate significant from typical behavior / Fraud detection / Technique: Isolation Forest</li><li>Semi-Supervised Learning: Small amount of labeled data / large amount of unlabeled data / Use the labeled data to label the unlabeled → then train the model / a.k.a pseudo-labeling eg: Document Classification</li><li>Self-Supervised Learning: …</li><li>Reinforcement Learning: is a branch of machine learning focused on training autonomous agents to make a sequence of decisions in dynamic environments to maximize a cumulative reward.</li></ul><p class="plain">How Reinforcement Learning Works:</p><ul class="sub"><li>Agent: The learner or decision-maker.</li><li>Environment: The system the agent interacts with.</li><li>Actions: Choices the agent can make.</li><li>State: The current situation of the environment.</li><li>Reward: Feedback signal after taking an action.</li></ul><p class="plain">Reinforcement Learning usecases:</p><figure><img loading="lazy" src="assets/aws-ai-practitioner/image3.jpg" alt="Diagram"></figure><p class="plain">Reinforcement Learning from Human Feedback (RLHF): Used human feedback to help the ML models to self-learn more efficiently / Used a lot in LLM – GenAI applications /</p><ul class="notes"><li>ML Data Sets</li></ul><ul class="sub"><li>Training Set: used to train</li><li>Validation Set: used to fine-tune and validate perf | 10-20%</li><li>Test Set: Evaluate Final model performance | 10-20%</li></ul><ul class="notes"><li>Feature Engineering: use domain knowledge to select and transform raw data into meaningful features: Techniques include –</li></ul><ul class="sub"><li>Feature Extraction: eg. deriving age from DOB</li><li>Feature Selection: select subset / important predictor features</li><li>Feature Transformation: eg. normalizing numerical data</li></ul><ul class="notes"><li>Model Evaluation – Model Fit, Bias, and Variance:</li></ul><h4>Model Fit</h4><ul class="sub"><li>Overfitting: Occurs when a model learns the training data too well, capturing not only the underlying patterns but also the noise and outliers. As a result, the model performs exceptionally well on training data but poorly on unseen or test data because it fails to generalize</li><li>Model is too complex (too many parameters or features)</li><li>High-dimensional data (curse of dimensionality)</li><li>Underfitting: Happens when a model is too simple to capture the underlying patterns in the data. It performs poorly on both training and test data, indicating it has not learned the relationships in the data</li><li>Model is too simple (not enough parameters, insufficient feature engineering)</li><li>Inadequate training time or insufficient data</li><li>Balanced: this is good</li></ul><p class="plain">Bias: Difference or error between predicted and actual value</p><figure><img loading="lazy" src="assets/aws-ai-practitioner/image4.jpg" alt="Diagram"></figure><h4>Variance</h4><figure><img loading="lazy" src="assets/aws-ai-practitioner/image5.jpg" alt="Diagram"></figure><figure><img loading="lazy" src="assets/aws-ai-practitioner/image6.jpg" alt="Diagram"></figure><figure><img loading="lazy" src="assets/aws-ai-practitioner/image7.jpg" alt="Diagram"></figure><p class="plain">Take Dots above as real world predictions</p><ul class="notes"><li>Confusion Matrix :</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image8.jpg" alt="Diagram"></figure><p class="plain">Sensitivity or Recall = True Positives / True Positives + False Negatives</p><p class="plain">Specificity = True Negatives / True Negatives + False Positives</p><p class="plain">Precision = True Positives / True Positives + False Positives</p><p class="plain">F1 Score = 2 * Precision * Recall / Precision + Recall</p><p class="plain">Accuracy = True Positive + True Negatives / TP + TN + FP + FN</p><p class="plain">Confusion Matrix can be multi-dimensional too / This helps mainly in evaluating models that do classification.</p><figure><img loading="lazy" src="assets/aws-ai-practitioner/image9.jpg" alt="Diagram"></figure><p class="plain">While above all help in classification models, screenshot below helps evaluate Regression Models.</p><figure><img loading="lazy" src="assets/aws-ai-practitioner/image10.jpg" alt="Diagram"></figure><ul class="notes"><li>Hyperparameters: are configuration variables in machine learning that are set before the training process begins and control how a model learns from data</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image11.jpg" alt="Diagram"></figure></article></div></section><section id="sec-aws-bedrock" class="section"><h2 class="sechead" tabindex="0">AWS Bedrock<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-aws-bedrock-notes"><ul class="notes"><li>Fully managed AWS service for building Gen AI applications.</li></ul><p class="plain">On top of all AWS / Cloud offers… 1) comes with set of Foundation Models build-in 2) RAG Layers / Easily build LLM Agents</p><p class="plain">Bedrock makes a copy of the FM available only to you that you can further fine-tune with your own data. Note: none of your data will be used to fine-tune the original model</p><figure><img loading="lazy" src="assets/aws-ai-practitioner/image12.jpg" alt="Diagram"></figure><ul class="notes"><li>FM on Bedrock (June 2025)</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image13.jpg" alt="Diagram"></figure><ul class="notes"><li>Fine tuning the Foundation Model to a Custom Model: To fine-tune a model you need to purchase ‘provisioned throughput’ (Not pre-pay)</li></ul><ul class="sub"><li>Instruction-based Fine tuning: Improves the performance of a pre-trained FM on domain specific tasks. We need to provide the FM labeled data to train (essentially prompt-response pairs)</li></ul><p class="plain">{</p><p class="plain">“prompt” : “What is the protocol for treating XYZ in LA”,</p><pre class="diagram">                “completetion”: “….”</pre><p class="plain">}</p><ul class="sub"><li>Continued Pre-training + Domain Adaptation Fine Tuning: Similar to how the FM model was trained on unlabeled data, continue training with unlabeled data. The unlabeled data will be your domain specific…so this is also called as domain-adaptation fine tuning.</li></ul><p class="plain">{</p><p class="plain">“input” : “lot of domain specific data”</p><p class="plain">}</p><ul class="sub"><li>Single-turn Messaging: Question / Answer</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image14.jpg" alt="Diagram"></figure><ul class="sub"><li>Multi-Turn Messaging: Conversational / ChatBot</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image15.jpg" alt="Diagram"></figure><p class="plain">Note: Fine-tuning model are essentially a part of Transfer Learning. “Transfer learning is a machine learning technique where knowledge gained from training a model on one task is leveraged to improve performance on a different, but related, task”</p><ul class="notes"><li>Evaluating a Model:</li></ul><ul class="sub"><li>Automatic Evaluation:</li><li>Human Evaluation:</li></ul><p class="plain">Automatic Evaluation: AWS offers Automatic Evaluation…Bring your own prompt dataset or use built-in curated prompt datasets.</p><figure><img loading="lazy" src="assets/aws-ai-practitioner/image16.jpg" alt="Diagram"></figure><p class="plain">Note: Some benchmark datasets allow you to very quickly detect any kind of bias and potential discrimination against people.</p><figure><img loading="lazy" src="assets/aws-ai-practitioner/image17.jpg" alt="Diagram"></figure><p class="plain">Human Evaluation:</p><figure><img loading="lazy" src="assets/aws-ai-practitioner/image18.jpg" alt="Diagram"></figure><ul class="notes"><li>Retrieval Augmented Generation (RAG Layer):</li></ul><p class="plain">Retrieval-Augmented Generation (RAG) enhances large language models (LLMs) by integrating an information retrieval step before generating a response. Instead of relying solely on the static knowledge encoded during training, RAG enables the model to first retrieve relevant information from external, authoritative data sources such as databases, document repositories, or APIs. This retrieved information is then combined with the user’s query to create an augmented prompt, which the LLM uses to generate more accurate, contextually relevant, and up-to-date responses</p><figure><img loading="lazy" src="assets/aws-ai-practitioner/image19.jpg" alt="Diagram"></figure><p class="plain">RAG Layer Population: Your datasets are pulled into vector databases. Embedded models (Amazon Titan or Cohere) are used to perform this activity. Default chosen is AWS OpenSearch Service (similar to ElasticSearch). AWS DocumentDB, Aurora, RDS for Postgres, Amazon Neptune (Graph) also options.</p><figure><img loading="lazy" src="assets/aws-ai-practitioner/image20.jpg" alt="Diagram"></figure><ul class="notes"><li>Some out-of-the-box RAG connectors –</li></ul><ul class="sub"><li>Amazon S3</li><li>Web Crawler</li><li>Confluence</li><li>Salesforce</li><li>Sharepoint</li></ul><ul class="notes"><li>Tokenization in generative AI is the process of breaking down input data—most commonly text, into smaller, manageable units called tokens that can be efficiently processed by AI models.</li></ul><ul class="sub"><li>Word based Tokenization: text is split into individual</li><li>Subword Tokenization: some (long) words are split too</li></ul><ul class="notes"><li>A Context Window (or context length) refers to the maximum amount of text (i.e. tokens) that the model can process, &quot;remember,&quot; and use to generate a response at any one time</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image21.jpg" alt="Diagram"></figure><ul class="notes"><li>Embedding Model converts token into Vectors – Vectors have a high dimensionality i.e. the additionally store additional info on a given token like semantic meaning, syntactic role, sentiment, etc.</li></ul><p class="plain">For example words that have a semantic relationship will have similar embeddings (example: ‘dog’ and ‘puppy’)</p><ul class="notes"><li>Bedrock GuardRails:</li></ul><ul class="sub"><li>Control the interactions between users and FMs</li><li>Filter undesirable and harmful content</li><li>Remove Personally Identifiable Information (PII)</li><li>Enhanced Privacy</li><li>Reduce Hallucinations</li></ul><ul class="notes"><li>Bedrock Agents: More like orchestrator / call FM / call an API / do some other things / provide result.</li></ul></article></div></section><section id="sec-prompt-engineering" class="section"><h2 class="sechead" tabindex="0">Prompt Engineering<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-prompt-engineering-notes"><ul class="notes"><li>Prompt engineering is the practice of designing, structuring, and refining inputs—called prompts—for generative artificial intelligence (AI) systems, particularly large language models (LLMs), to guide them in producing optimal, accurate, and relevant outputs.</li><li>Main Components of a Prompt:</li></ul><ul class="sub"><li>Instruction / Directive: The main question</li><li>Context: Addition Info / Background Info</li><li>Input Data: If there is some input and not just question</li><li>Persona / Role: role or perspective to adopt</li><li>Exemplar / Examples:</li><li>Format / Output Indicator: example -&gt; respond in JSON</li><li>Constraints: specific limitations or rules -&gt; word limits / avoid certain topics / follow ethical guidelines</li><li>Technique / Approach: eg: first explain then summarize</li></ul><ul class="notes"><li>Prompt Performance Optimization:</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image22.jpg" alt="Diagram"></figure><p class="plain">Temperature: Temperature scales the logits (raw scores before softmax) to adjust the overall randomness of the output.</p><p class="plain">Top-P: Selects tokens from the smallest set whose cumulative probability exceeds a threshold p (e.g., 0.9). The size of this set varies dynamically depending on the distribution.</p><p class="plain">Top-K: Limits token selection to the top k most probable tokens. The model only samples from this fixed-size set.</p><p class="plain">Note: Be it Temperature, Top P, or Top K bigger number relates to less likely, less conservative, i.e. more variable, diverse and creative response.</p><ul class="sub"><li>Higher Temperature and Top-P for creativity</li><li>Lower Temperature and Top-K for precision and coherence</li></ul><p class="plain">Prompt Latency: Few factors –</p><ul class="sub"><li>The model size</li><li>The model itself (Claude vs Llama vs other)</li><li>Number of tokens in input (i.e. more context / more inputs)</li><li>Number of tokens in output</li></ul><p class="plain">Note: However, the Temperature, Top-P, Top-K parameters do not impact latency.</p><ul class="notes"><li>Prompt Engineering Techniques:</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image23.jpg" alt="Diagram"></figure><p class="plain">+ Negative Prompting:</p><ul class="notes"><li>Prompt Templates: Templates for prompts to make it easy.</li><li>Prompt Injection Attacks: This is where the prompt can be engineered to do malicious stuff. Protection include explicit instruction in the prompt to ignore anything that say to some crazy stuff.</li></ul></article></div></section><section id="sec-amazon-q" class="section"><h2 class="sechead" tabindex="0">Amazon Q<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-amazon-q-notes"><ul class="sub"><li>Amazon Q Business</li><li>Amazon Q Business Lite</li><li>Amazon Q Business Pro</li><li>Amazon Q Developer</li><li>Amazon Q Developer Pro</li><li>Amazon Q for AWS Services</li><li>Amazon Q for QuickSight</li><li>Amazon Q for EC2</li><li>Amazon Q for AWS Chatbot</li><li>Amazon Q for Glue</li><li>more and more are coming up…</li></ul><ul class="notes"><li>Amazon Q Business: Fully managed Gen-AI assistant for your employees.</li></ul><p class="plain">Has around 40+ data connectors (fully managed RAG basically) that can crawl on all your data sources.</p><ul class="sub"><li>Amazon S3, RDS, Aurora, WorkDocs</li><li>MS 365, Salesforce, Google Drive, Gmail, Slack, Sharepoint</li><li>Additional, plugins to 3rd party services (JIRA, ServiceNow, ZenDesk, etc.)</li><li>Custom Plugins can be developed to connect to any using APIs</li></ul><p class="plain">Can be tied to AWS IAM service which in turn can be configured with external Identity Providers (Microsoft Active Directory / Google)</p><p class="plain">Amazon Q Business Admin Controls…same as GuardRails. Make sure you can control and put some rules on usage to prevent misuse.</p><p class="plain">Amazon Q Apps are a feature within Amazon Q Business that lets users create lightweight, generative</p><p class="plain">AI-powered applications using their organization’s data. These apps are designed to streamline and automate business tasks, making it easy for employees to turn conversations or prompts into reusable tools that boost productivity.</p><ul class="notes"><li>Amazon Q Developer: Amazon Q Developer is a generative AI–powered assistant designed to accelerate and automate software development tasks across AWS environments, third-party IDEs, and CLI. It serves as a assistant, expert AWS consultant, and autonomous agent for building, operating, and transforming software projects.</li></ul><p class="plain">Programming specific integrates with with VS Code, VS, and JetBrains. It can –</p><ul class="sub"><li>Answer questions about AWS development</li><li>Code completions and Code Generations</li><li>Scan your code for security vulnerabilities</li><li>Debugging, optimizations, improvements</li></ul></article></div></section><section id="sec-aws-managed-services" class="section"><h2 class="sechead" tabindex="0">AWS Managed Services<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-aws-managed-services-notes"><ul class="notes"><li>Not new…most of these services existing before Amazon BedRock and Amazon Q (Traditional AI)</li></ul><p class="plain">Gen AI Specific services we have seen so far -</p><ul class="sub"><li>Amazon BedRock</li><li>Amazon Q Business</li><li>Amazon Q Developer</li><li>SageMaker JumpStart</li></ul><ul class="notes"><li>Other Core AI Services (not just GenAI)</li></ul><ul class="sub"><li>Amazon Comprehend (Text/Docs | Text → Text)</li><li>Amazon Translate (Text/Docs | Text → Text)</li><li>Amazon Textract (OCR | Images → Text)</li><li>Amazon Lex (Chatbots | Text)</li><li>Amazon Kendra (Search | Text)</li><li>Amazon Polly (Text → Speech)</li><li>Amazon Transcribe (Speech → Text)</li><li>Amazon Rekognition (Vision)</li><li>Amazon SageMaker (Foundational / Do it yourself)</li></ul><ul class="notes"><li>Amazon Comprehend: Natural Language Processing tool / Find insights and relationships in text. Provide info extraction, sentiment analysis (positive / negative), analyze text, automatically organize / group text based on content, etc.</li></ul><p class="plain">Comprehend Custom Classification: you define the groups / categories, provide some training data. A custom classifier is generated specific to your use case. Then real-world.</p><p class="plain">Named Entity Recognition (NER): Extract specific stuff like people, places, organizations, dates, and other standard categories from text.</p><p class="plain">Custom Entity Recognition: Extract more specific items based on your use case like policy numbers, ssn, mrn, whatever.</p><p class="plain">Next step after Comprehend once classification occurs you can route to specific endpoints where some additional action can be taken.</p><ul class="notes"><li>Amazon Translate: Core is Language translation (Text) from one language to another</li><li>Amazon Transcribe: Automatic Speech Recognition to convert speech to text quickly / Supports automatically redacting PII information / Supports Automatic Language Identification</li></ul><p class="plain">Ways to improve accuracy you can…1) Use custom vocabularies (your own custom words say like an internal product name) and 2) Custom Language Models (say for some custom training on your org specific contexts)</p><p class="plain">Has a Toxicity Detection feature: used speech cues / tones / pitch / actual text.</p><ul class="notes"><li>Amazon Polly: Opposite of Amazon Transcribe: Text → Speech</li></ul><ul class="sub"><li>Lexicons: Text may have AWS but need polly to read full form</li><li>SSML: Speech Synthesis Markup Language (Markup for how the text has to be spoken – say a long pause or to whisper, etc</li><li>Voice Engine: voice flavor – standard, long-form, etc</li><li>Speech Mark:</li></ul><ul class="notes"><li>Amazon Rekognition: Find objects, text, scenes, people in images and videos using ML.Usecases:</li></ul><ul class="sub"><li>Labeling</li><li>Moderation</li><li>Text Detection</li><li>Face Detection and Analysis</li><li>Face Search and Verification</li><li>Celebrity Recognition</li><li>Pathing (sports)</li></ul><p class="plain">Amazon Rekognition Custom Labels: You want to identify your own logos / organization stuff. Train with your custom images.</p><ul class="notes"><li>Amazon Lex: Chatbot / Can be started using Traditional method or using Generative AI</li><li>Amazon Personalize: Recommendations</li></ul><p class="plain">Amazon Recipes: algorithms tailored for specific usecases</p><figure><img loading="lazy" src="assets/aws-ai-practitioner/image24.jpg" alt="Diagram"></figure><ul class="notes"><li>Amazon Textract: Scan / Extract text from text, handwriting….basically OCR</li><li>Amazon Kendra: Document Search Service</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image25.jpg" alt="Diagram"></figure><ul class="notes"><li>Amazon Augmented AI (A2I): For human oversight of ML predictions in production.</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image26.jpg" alt="Diagram"></figure><ul class="notes"><li>Amazon Transcribe (Medical) / Amazon Comprehend (Medical): HIPAA compliant / transcribe medical terminologies / supports both real-time and batch. Main…one of man docs dictate medical notes.</li><li>Side note: Options from hardware perspective…GPUs / NVIDIA or can use AWS’s AWS Trainium / AWS Inferentia GPU chips specific for training and inferencing / powerful / cheaper / low carbon footprint</li></ul></article></div></section><section id="sec-aws-sagemaker" class="section"><h2 class="sechead" tabindex="0">AWS SageMaker<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-aws-sagemaker-notes"><ul class="sub"><li>SageMaker AI: e2e all ML service / Build your own model Train – Deploy – Operate – Test / Think Traditional AI than Gen AI / However SageMaker can import existing models – FMs…in fact SageMaker has access to more model than what is offered on BedRock.</li><li>SageMaker Automatic Model Tuning (AMT): give an objective metric and then AMT determines the hyperparameters tuning portions, search strategy, maximum runtime of a training job, stop / early stop conditions, etc.</li><li>SageMaker Deployment &amp; Inference: One-click automated deployments / automated scaling. Deployment types…</li></ul><p class="plain">Realtime: for one msg / one prediction at a time</p><ul class="sub"><li>Serverless: if tolerate more latency / cold starts</li><li>Asynchronous: Near-realtime / async /1 big msg</li><li>Batch: multiple messages: multiple msgs / batch</li><li>SageMake Studio: Unified Interface for e2e ML</li><li>SageMaker Data Wrangler: Data prep / Data Munge / Data Cleanse / Data Transformation / Data Visualization / Data Anything / Feature engineering</li><li>SageMaker Feature Store: Single spot to store / manage Features for your org</li><li>SageMake Clarify: Evaluate Model - Foundation Models / Relevance between a Model A and Model B / Evaluate based on say friendliness or humor / You can also bring in humans (AWS or your own) to aid in this comparison / Model Explainability – reasoning and explanation for model outcomes (why was a loan denied) / Detect Bias – be able to detect bias using statistical metrics</li><li>SageMake GroundTruth: for RLHF…Reinforcement Learning from Human Feedback – Where humans can give feedback on model evaluation. There is also GroundTruth Plus…where humans (orgs or Mechanical Turks) can be used for labeling data used for training.</li><li>SageMaker Model Cards: Essential Model Information / Intended uses, Risks, Ratings, and training details)</li><li>SageMaker Model Dashboard: central portal for model mgmt. / which are in training / deployed / quality / bias / explainability, etc.</li><li>SageMaker Model Monitor: monitor / alerts</li><li>SageMaker Model Registry: track / monitor / version / approve / catalog / model workflows</li><li>SageMaker Pipelines: automation / for MLOps</li><li>Processing – mainky feature engineering</li><li>Training – training!</li><li>Tuning – hyperparameter tuning</li><li>AutoML – automatically train a model</li><li>Model – create/register a model</li><li>ClarifyCheck (drift with baseline model bias, explainability, etc.)</li><li>QualityCheck (drift with data quality, model quality)</li><li>SageMaker Role Manager: manage roles</li><li>SageMaker JumpStart: to find FMs and lot of other vision, image processing, NLP, models…for common usecases. 2 options –</li><li>ML Hub: browse -&gt; experiment/customize -&gt; deploy</li><li>ML Solutions: browse -&gt; select / customize -&gt; deploy</li><li>SageMaker Canvas: Not a developer…no coding canvas to develop / deploy models…has direct integration with Rekognition, Comprehend, etc</li><li>MLFlow on SageMaker: Open-Source tool for managing entire lifecycle / SageMaker supports it and can be accessed from SageMaker but this is not an AWS service.</li></ul><p class="plain">Note: SageMake can operate in a fully network isolated mode / cannot access anything outside (even on AWS) of the isolated environment.</p><p class="plain">Note: SageMaker DeepAR Forecasting algorithm is used for forecasting time-series data / Leverages Recurrent Neural Networks</p></article></div></section><section id="sec-responsible-ai" class="section"><h2 class="sechead" tabindex="0">Responsible AI<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-responsible-ai-security-compliance-governance"><h3>Security, Compliance &amp; Governance</h3><ul class="notes"><li>Watch videos</li></ul></article></div></section><section id="sec-auxiliary-aws-services-for-ai" class="section"><h2 class="sechead" tabindex="0">Auxiliary AWS Services for AI<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-auxiliary-aws-services-for-ai-notes"><ul class="notes"><li>Watch videos</li></ul></article></div></section><section id="sec-miscellaneous" class="section"><h2 class="sechead" tabindex="0">Miscellaneous<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-miscellaneous-notes"><ul class="notes"><li>Config vs Macie vs Inspector vs CloudTrail vs Trusted Advisor</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image27.jpg" alt="Diagram"></figure><p class="plain">AWS Config → configuration mgmt. / changes focused</p><p class="plain">AWS Inspector → EC2 / Lambda / OS patch / sec vulnerab focused</p><p class="plain">AWS Macie → ML/AI more S3 and PII/PHI sensitive data focused</p><p class="plain">AWS CloudTrail → API calls focused / applies to all services</p><p class="plain">AWS Trusted Advisor → Account level / recos not specific tracking</p><ul class="notes"><li>AWS Artifacts vs AWS Audit Manager</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image28.jpg" alt="Diagram"></figure><ul class="notes"><li>Biases</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image29.jpg" alt="Diagram"></figure><ul class="sub"><li># Shapley Values VS Partial Dependency Plots (PDP) for Model Explainability:</li><li>Shapley values are a local interpretability method that explains individual predictions by assigning each feature a contribution score based on its marginal effect on the prediction.</li><li>Partial Dependence Plots (PDP), on the other hand, provide a global view of the model’s behavior by illustrating how the predicted outcome changes as a single feature is varied across its range, holding all other features constant (across entire dataset)</li><li># ROUGE vs BERT vs BERTScore vs Accuracy</li><li>Use ROUGE for summarization and when recall is more important (focuses on recall/sensitivity)</li><li>Use BLEU for translation or generation tasks where exact matches are valued (emphasizes on precision)</li><li>Use BERTScore for tasks where semantic similarity and paraphrasing are common.</li><li>Use Accuracy for classification or tasks with a single correct answer.</li><li># You can use model invocation logging to collect invocation logs, model input data, and model output data for all invocations in your AWS account used in Amazon Bedrock. While you can use CloudTrail to monitor the API calls…it is more focused on who accessed / access mgmt. / security and less on the data.</li><li>#</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image30.jpg" alt="Diagram"></figure><p class="plain">One optional step that comes just before Data Collection/Prep is Exploratory Data Analysis (EDA) phase, which involves examining the data through statistical summaries and visualizations to identify patterns, detect anomalies, and form hypotheses. This phase is crucial for understanding the dataset’s structure and characteristics.</p><ul class="notes"><li>The conversion rate is a key business metric that directly measures how well the AI solution is driving desired actions like purchases, sign-ups, or task completion. It tracks the percentage of users who move from one stage (like browsing) to completing a desired action (like making a purchase).</li></ul><figure><img loading="lazy" src="assets/aws-ai-practitioner/image31.jpg" alt="Diagram"></figure><ul class="notes"><li>Integrating with a RAG layer does not mean that the FM is re-trained with the data from the RAG. Data is used for better results but no re-training / changing weights.</li><li>The F1 score is the harmonic mean of precision and recall, balancing the trade-off between the two metrics. It gives equal weight to both precision and recall, making it useful for evaluating models where false positives and false negatives are equally important.</li></ul><div class="tablewrap"><table><thead><tr><th>AI Service</th><th>AWS</th><th>Google</th></tr></thead><tbody><tr><td>Foundation Model / LLM</td><td>N/A</td><td>Gemini API</td></tr><tr><td>Generative AI Service</td><td>AWS Bedrock</td><td>Vertex AI Studio</td></tr><tr><td>Agentic</td><td>AWS Bedrock Agents</td><td>Vertex AI Agent Builder</td></tr><tr><td>ML/DL/FMs</td><td>SageMaker </td><td>Vertex AI Custom Training</td></tr><tr><td>ML/DL/FMs</td><td>SageMaker JumpStart</td><td>Vertex AI Model Garden</td></tr><tr><td>ML/DL/FMs</td><td>SageMaker AutoPilot</td><td>Vertex AI AutoML</td></tr><tr><td>Natural Language Processing</td><td>Amazon Comprehend</td><td>Cloud Natural Language API</td></tr><tr><td>Language Translation</td><td>Amazon Translate</td><td>Cloud Translation API</td></tr><tr><td>OCR</td><td>Amazon Textract</td><td>Document AI</td></tr><tr><td>Conversational AI</td><td>Amazon Lex</td><td>DiagFlow</td></tr><tr><td>Enterprise Search</td><td>Amazon Kendra</td><td>Discovery Engine API</td></tr><tr><td>Enterprise Search</td><td></td><td>Agentspace (focused on creating agents)</td></tr><tr><td>Enterprise Search</td><td></td><td>Vertex AI Search (focused on enabling contextual enterprise search and powering RAG for grounded AI)</td></tr><tr><td></td><td></td><td>NotebookLM (AI powered research / note-taking tool)</td></tr><tr><td>Speech-to-Text</td><td>Amazon Transcribe</td><td>Cloud Speech-To-Text API</td></tr><tr><td>Text-to-Speech</td><td>Amazon Polly</td><td>Cloud Text-To-Speech API</td></tr><tr><td>Image &amp; Video Analysis</td><td>Amazon Rekognition</td><td>Cloud Vision API</td></tr><tr><td>Recommendations / Personalization</td><td>Amazon Personalize</td><td>Recommendations API</td></tr><tr><td>Humans-in-the-Loop</td><td>Amazon Augmented AI (A2I) / Mechanical Turk</td><td>Data Labeling Service</td></tr><tr><td>AI Infrastructure</td><td>Trainium and Inferentia Chips</td><td>Cloud TPUs</td></tr><tr><td></td><td></td><td></td></tr></tbody></table></div></article></div></section>
+</main>
+</div>
+<button class="btn" id="menuBtn" title="Menu">☰</button>
+<button id="toTop" title="Back to top">↑</button>
+<script>
+(function(){
+  // Theme
+  var root = document.documentElement, KEY='awssg-theme';
+  function apply(t){ root.setAttribute('data-theme', t); }
+  var saved = localStorage.getItem(KEY);
+  apply(saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  document.getElementById('themeToggle').onclick = function(){
+    var next = root.getAttribute('data-theme')==='dark' ? 'light':'dark';
+    apply(next); localStorage.setItem(KEY, next);
+  };
+
+  // Collapse sections
+  document.querySelectorAll('.sechead').forEach(function(h){
+    h.addEventListener('click', function(){ h.parentElement.classList.toggle('collapsed'); });
+  });
+  document.getElementById('expandAll').onclick = function(){
+    document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('collapsed'); });
+  };
+  document.getElementById('collapseAll').onclick = function(){
+    document.querySelectorAll('.section').forEach(function(s){ s.classList.add('collapsed'); });
+  };
+  // Expand target section on nav click
+  document.querySelectorAll('.navsec,.navtopic').forEach(function(a){
+    a.addEventListener('click', function(){
+      var el = document.querySelector(a.getAttribute('href'));
+      if(el){ var sec = el.closest('.section') || el; sec.classList.remove('collapsed'); }
+      if(innerWidth<=860) sidebar.classList.remove('open');
+    });
+  });
+
+  // Search
+  var input = document.getElementById('search'), meta = document.getElementById('searchmeta');
+  var topics = Array.prototype.slice.call(document.querySelectorAll('.topic'));
+  topics.forEach(function(t){ t.dataset.text = t.textContent.toLowerCase(); });
+  function unmark(el){
+    el.querySelectorAll('mark').forEach(function(m){
+      m.replaceWith(document.createTextNode(m.textContent));
+    });
+    el.normalize();
+  }
+  function markText(el, q){
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+      acceptNode:function(n){ return n.parentNode.nodeName==='SCRIPT'?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT; }
+    });
+    var nodes=[], n;
+    while((n=walker.nextNode())) if(n.nodeValue.toLowerCase().indexOf(q)>-1) nodes.push(n);
+    nodes.forEach(function(node){
+      var frag=document.createDocumentFragment(), txt=node.nodeValue, lo=txt.toLowerCase(), i=0, j;
+      while((j=lo.indexOf(q,i))>-1){
+        frag.appendChild(document.createTextNode(txt.slice(i,j)));
+        var m=document.createElement('mark'); m.textContent=txt.slice(j,j+q.length); frag.appendChild(m);
+        i=j+q.length;
+      }
+      frag.appendChild(document.createTextNode(txt.slice(i)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+  var lastQ='';
+  function doSearch(){
+    var q = input.value.trim().toLowerCase();
+    if(q===lastQ) return; lastQ=q;
+    var shown=0;
+    topics.forEach(function(t){ unmark(t); });
+    topics.forEach(function(t){
+      var hit = !q || t.dataset.text.indexOf(q)>-1;
+      t.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+      if(hit && q.length>=2) markText(t, q);
+    });
+    document.querySelectorAll('.section').forEach(function(s){
+      var any = s.querySelector('.topic:not(.hidden)');
+      s.style.display = any ? '' : 'none';
+      if(q) s.classList.remove('collapsed');
+    });
+    meta.textContent = q ? shown + ' topic' + (shown===1?'':'s') + ' match' : '';
+  }
+  var deb; input.addEventListener('input', function(){ clearTimeout(deb); deb=setTimeout(doSearch,120); });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='/' && document.activeElement!==input){ e.preventDefault(); input.focus(); input.select(); }
+    if(e.key==='Escape' && document.activeElement===input){ input.value=''; doSearch(); input.blur(); }
+  });
+
+  // Scrollspy
+  var links={};
+  document.querySelectorAll('.navtopic').forEach(function(a){ links[a.getAttribute('href').slice(1)]=a; });
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      var a = links[en.target.id]; if(!a) return;
+      if(en.isIntersecting){
+        document.querySelectorAll('.navtopic.active').forEach(function(x){x.classList.remove('active');});
+        a.classList.add('active');
+      }
+    });
+  }, {rootMargin:'0px 0px -75% 0px'});
+  topics.forEach(function(t){ obs.observe(t); });
+
+  // Back to top + mobile menu
+  var toTop=document.getElementById('toTop'), sidebar=document.getElementById('sidebar');
+  addEventListener('scroll', function(){ toTop.style.display = scrollY>600 ? 'block':'none'; }, {passive:true});
+  toTop.onclick=function(){ scrollTo({top:0,behavior:'smooth'}); };
+  document.getElementById('menuBtn').onclick=function(){ sidebar.classList.toggle('open'); };
+})();
+</script>
+</body>
+</html>
