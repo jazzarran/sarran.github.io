@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure Fundamentals Study Guide</title>
+<meta name="description" content="Microsoft Azure Fundamentals certification study notes — compute, storage, databases, networking, security.">
+<style>
+:root{
+  --bg:#f0f7fc; --panel:#ffffff; --text:#1c2430; --muted:#54677a; --border:#d6e6f2;
+  --accent:#2e8fd4; --accent-soft:#e3f2fc; --link:#1b6fb5; --code-bg:#eaf3fa;
+  --mark:#ffe58a; --shadow:0 1px 3px rgba(30,80,130,.08);
+}
+[data-theme="dark"]{
+  --bg:#0f1a24; --panel:#17252f; --text:#dde8f0; --muted:#8aa0b3; --border:#24394a;
+  --accent:#5db4ec; --accent-soft:#153349; --link:#6cb8ee; --code-bg:#1c2e3d;
+  --mark:#8a6d1a; --shadow:0 1px 3px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:1rem}
+body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.55; font-size:15.5px}
+a{color:var(--link); text-decoration:none}
+
+/* Layout */
+.wrap{display:flex; min-height:100vh}
+.sidebar{width:280px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto;
+  background:var(--panel); border-right:1px solid var(--border); padding:1rem .9rem 2rem; scrollbar-width:thin}
+main{flex:1; min-width:0; max-width:980px; padding:1.5rem 2.2rem 5rem}
+
+/* Sidebar */
+.brand{font-weight:700; font-size:1.02rem; margin:.2rem 0 1rem; display:flex; align-items:center; gap:.5rem}
+.brand .awslogo{color:var(--accent); font-size:1.25rem}
+.searchbox{position:relative; margin-bottom:.6rem}
+.searchbox input{width:100%; padding:.5rem .7rem .5rem 2rem; border:1px solid var(--border); border-radius:8px;
+  background:var(--bg); color:var(--text); font-size:.9rem; outline:none}
+.searchbox input:focus{border-color:var(--accent)}
+.searchbox svg{position:absolute; left:.6rem; top:50%; transform:translateY(-50%); width:14px; height:14px; stroke:var(--muted)}
+.searchmeta{font-size:.75rem; color:var(--muted); min-height:1.1em; margin-bottom:.5rem}
+.navgroup{margin-bottom:.35rem}
+.navsec{display:block; font-weight:700; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--text); padding:.4rem .5rem .2rem}
+.navsec:hover{color:var(--accent)}
+.navtopics{border-left:2px solid var(--border); margin-left:.55rem}
+.navtopic{display:block; padding:.18rem .6rem; font-size:.86rem; color:var(--muted); border-left:2px solid transparent; margin-left:-2px}
+.navtopic:hover{color:var(--text)}
+.navtopic.active{color:var(--accent); border-left-color:var(--accent); font-weight:600}
+.sidefoot{margin-top:1rem; display:flex; gap:.4rem; flex-wrap:wrap}
+.btn{border:1px solid var(--border); background:var(--panel); color:var(--muted); border-radius:7px;
+  padding:.3rem .6rem; font-size:.75rem; cursor:pointer}
+.btn:hover{color:var(--text); border-color:var(--accent)}
+
+/* Header row */
+.pagehead{display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:.3rem}
+.pagehead h1{font-size:1.55rem; margin:0}
+.pagehead .sub{color:var(--muted); font-size:.9rem; margin:0 0 1.2rem}
+#themeToggle{font-size:1rem; line-height:1; padding:.35rem .55rem}
+
+/* Sections & topics */
+.section{margin-top:1.6rem}
+.sechead{display:flex; align-items:center; gap:.5rem; font-size:1.18rem; letter-spacing:.04em; text-transform:uppercase;
+  color:var(--accent); border-bottom:2px solid var(--accent); padding-bottom:.3rem; cursor:pointer; user-select:none; margin:0 0 .9rem}
+.sechead .chev{margin-left:auto; transform:rotate(90deg); transition:transform .18s; font-size:1.3rem; color:var(--muted)}
+.section.collapsed .chev{transform:rotate(0deg)}
+.section.collapsed .secbody{display:none}
+.topic{background:var(--panel); border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow);
+  padding:1rem 1.25rem; margin-bottom:1rem}
+.topic h3{margin:.1rem 0 .6rem; font-size:1.02rem; display:flex; align-items:baseline; gap:.6rem; flex-wrap:wrap}
+.topic h3 .subtitle{font-weight:400; font-size:.82rem; color:var(--muted)}
+.topic.hidden{display:none}
+
+/* Content */
+ul.notes{margin:.3rem 0; padding-left:1.15rem}
+ul.notes li{margin:.28rem 0}
+ul.notes li::marker{color:var(--accent)}
+ul.sub{margin:.3rem 0 .3rem .5rem; padding-left:1.3rem}
+ul.sub li{margin:.15rem 0; font-size:.95em}
+ul.sub li::marker{color:var(--muted)}
+p.plain{margin:.45rem 0}
+.topic h4{font-size:.92rem; margin:.9rem 0 .3rem; color:var(--accent)}
+.cont{color:var(--muted); font-size:.92em; margin:.15rem 0 0 .1rem}
+p.cont{margin:.3rem 0 .3rem 1.15rem}
+ol.steps{margin:.3rem 0; padding-left:1.4rem}
+ol.steps li{margin:.22rem 0}
+.sublabel{font-weight:700; font-size:.85rem; margin:.7rem 0 .15rem; color:var(--text)}
+pre.diagram{background:var(--code-bg); border:1px solid var(--border); border-radius:8px; padding:.6rem .8rem;
+  font-size:.82rem; overflow-x:auto; margin:.5rem 0}
+.tablewrap{overflow-x:auto; margin:.6rem 0}
+table{border-collapse:collapse; width:100%; font-size:.88rem}
+th,td{border:1px solid var(--border); padding:.45rem .6rem; text-align:left; vertical-align:top}
+th{background:var(--accent-soft); color:var(--text); font-weight:700}
+[data-theme="dark"] th{background:var(--accent-soft)}
+tbody tr:nth-child(even){background:color-mix(in srgb, var(--border) 25%, transparent)}
+figure{margin:.8rem 0}
+figure img{max-width:100%; border:1px solid var(--border); border-radius:8px; background:#fff}
+mark{background:var(--mark); color:inherit; border-radius:2px; padding:0 1px}
+
+/* Back to top */
+#toTop{position:fixed; right:1.2rem; bottom:1.2rem; width:38px; height:38px; border-radius:50%;
+  border:1px solid var(--border); background:var(--panel); color:var(--muted); font-size:1.1rem; cursor:pointer;
+  box-shadow:var(--shadow); display:none}
+#toTop:hover{color:var(--accent)}
+
+/* Mobile */
+#menuBtn{display:none}
+@media (max-width:860px){
+  .sidebar{position:fixed; z-index:20; left:0; top:0; transform:translateX(-100%); transition:transform .2s; width:270px}
+  .sidebar.open{transform:none; box-shadow:0 0 30px rgba(0,0,0,.3)}
+  main{padding:1rem 1rem 4rem}
+  #menuBtn{display:inline-block; position:fixed; z-index:21; left:.8rem; bottom:1.2rem; width:42px; height:42px;
+    border-radius:50%; font-size:1.15rem; box-shadow:var(--shadow)}
+}
+@media print{
+  .sidebar,#toTop,#menuBtn,#themeToggle{display:none!important}
+  main{max-width:none; padding:0}
+  .topic{break-inside:avoid; box-shadow:none}
+  .section.collapsed .secbody{display:block}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="sidebar" id="sidebar">
+  <div class="brand"><span class="awslogo">▲</span> AWS Study Guide</div>
+  <div class="searchbox">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input type="search" id="search" placeholder="Search notes…  ( / )" autocomplete="off">
+  </div>
+  <div class="searchmeta" id="searchmeta"></div>
+  <div class="navgroup"><a class="navsec" href="#sec-basics">Basics</a><div class="navtopics"><a class="navtopic" href="#sec-basics-hierarchies">Hierarchies</a></div></div><div class="navgroup"><a class="navsec" href="#sec-compute">Compute</a><div class="navtopics"><a class="navtopic" href="#sec-compute-computing-services">Computing Services</a></div></div><div class="navgroup"><a class="navsec" href="#sec-storage">Storage</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-databases">Databases</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-networking">Networking</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-application-integration">Application Integration</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-analytics">Analytics</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-security">Security</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-developer-mobile-tools">Developer / Mobile Tools</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-azure-devops">Azure DevOps</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-miscellaneous">Miscellaneous</a><div class="navtopics"></div></div>
+  <div class="sidefoot">
+    <button class="btn" id="expandAll">Expand all</button>
+    <button class="btn" id="collapseAll">Collapse all</button>
+  </div>
+</nav>
+<main>
+  <div class="pagehead">
+    <h1>Azure Fundamentals Study Guide</h1>
+    <button class="btn" id="themeToggle" title="Toggle theme">◐</button>
+  </div>
+  <p class="sub">Condensed exam notes — Azure compute, storage, databases, networking, security and more. Use the sidebar or press <b>/</b> to search.</p>
+  <section id="sec-basics" class="section"><h2 class="sechead" tabindex="0">Basics<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-basics-hierarchies"><h3>Hierarchies</h3><p class="plain">Azure Geography →  Azure Regions → Azure Availability Zones → Availability Sets</p><p class="plain">(Azure Geography examples: United States, Canada, Azure Government (US), etc)</p><p class="plain">Paired Region: Each region is paired with another region 300 miles++ for DR purposes</p><p class="plain">Specialized Region: Specialized / secret regions to meet compliance or legal reasons (US DoD Central, US Gov Virginia, US Gov Iowa, China East, China North, etc)</p><p class="plain">Region generally contains 3 AZs</p><p class="plain">Fault Domain / Update Domain: An Availability Set is a combination of a fault domain and an update domain. A Fault Domain is a logical grouping of hardware to avoid a single point of failure within an AZ + share a common power source and network switch. Update domain used to ensure than updates to underlying hardware and software is done in sets i.e. if your apps runs across 2 update domains then both will not be taken down at the same time for hardware/software upgrades or patches.</p><p class="plain">Availability Set: Logical grouping of VMs can be defined indicating the number of Fault Domains and Update Domains your VMs will need to be spread across. think horizontal and vertical slices</p><figure><img loading="lazy" src="assets/azure-fundamentals/image1.jpg" alt="Diagram"></figure><ul class="notes"><li>SLA with Availability Sets: 99.95% SLA with Availability Zones: 99.99%</li><li>Account Hierarchies: Account → Management Group → Subscriptions → Resource Groups → Resources</li><li>Azure Subscriptions: Aggregation mainly for separated billing (i.e. by teams / by department / by products, etc) – also serves as a means to apply permissions across the board</li></ul><ul class="sub"><li>Free</li><li>Pay As You Go</li><li>Developer Support</li><li>Professional Direct Support</li><li>Standard Support</li><li>Enterprise</li><li>Student</li></ul><ul class="notes"><li>Azure Resource Groups (collection based on env, department, clients, etc) – permissions can be assigned at a resource group level, resources can be deleted in one shot, group based on env? module? etc</li></ul></article></div></section><section id="sec-compute" class="section"><h2 class="sechead" tabindex="0">Compute<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-compute-computing-services"><h3>Computing Services</h3><ul class="sub"><li>Azure Virtual Machines (==EC2)</li><li>Azure Scale Sets (==AutoScaling)</li><li>Azure WebApps (==BeanStalk)</li><li>Azure Container Instances (==ECS)</li><li>Azure Kubernetes Service (==EKS)</li><li>Azure Service Fabric (Microservices / CAAS)</li><li>Azure Functions (==Lambda)</li><li>Azure Batch</li></ul><ul class="notes"><li>Billing Option for VMs 1) Pay as you go 2) One Year Reserved (18% discount) and 3) Three Year Reserved (32% discount)</li><li>Factors for VM billing -&gt; VM class / VM region / Billing Option / OS Disk assigned to the VM / Storage transactions</li><li>Dedicated Physical Host – servers or rack all for yourself / company….no other VMs can be spun up here / the maintenance events can also be scheduled according to your convenience + Azure Spot VMs also available</li></ul></article></div></section><section id="sec-storage" class="section"><h2 class="sechead" tabindex="0">Storage<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-storage-notes"><ul class="notes"><li>Storage Account: wrapper for actual storage services</li></ul><ul class="sub"><li>General purpose V2 (newest version for blob / file / table / queue storage)</li><li>General Purpose V1 (older version for blob / file / table / queue storage)</li><li>BlockBlobStorage premium performance for blobs only (images/dcs/video/audio)</li><li>File Storage  premium performance for file only storage</li></ul><ul class="notes"><li>Storage Types</li></ul><ul class="sub"><li>Azure Blob Storage (==S3) [Block blobs: text/binary files | Append blobs: identical for log data | Page blobs: ideal for Azure virtual hard disk files]</li><li>Azure Disk Storage (==EBS | SSD or HDD)</li><li>Azure File Storage (==EFS | shared volume used like a file server)</li><li>Azure Archive Storage (==GLACIER)</li><li>Azure Data Box / Azure Data Box Heavy (==SNOWBALL)</li><li>Azure Data Lake Storage</li><li>Azure Queue Storage (belongs to integration section)</li><li>Azure Table Storage (unstructured/NoSQL - belongs to DB section)</li></ul><ul class="notes"><li>Replication:</li></ul><p class="plain">Locally redundant storage LRS (three copies within same data center)</p><p class="plain">Zone redundant storage ZRS (three copies in 3 AZs)</p><p class="plain">Geo-redundant storage GRS (three copies in 3 regions)</p><p class="plain">Read Access GRS (same as GRS + files in another region available for read-only access)</p><ul class="notes"><li>Azure Blob storage – Access Tiers</li></ul><ul class="sub"><li>Hot (Standard)</li><li>Cool (Infrequently accessed)</li><li>Archive (Glacier)</li></ul></article></div></section><section id="sec-databases" class="section"><h2 class="sechead" tabindex="0">Databases<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-databases-notes"><ul class="sub"><li>Azure Table Storage (==DynamoDB)</li><li>Azure SQL Database (==RDS | MSSQL)</li><li>Azure Database (==RDS | for MySQL or PostgreSQL or MariaDB)</li><li>Azure SQL Managed Service (same but runs within virtual network)</li><li>SQL Servers on VMs (Lift and Shift On-Prem to Cloud)</li><li>Azure Cosmos DB</li><li>Azure Synapse Analytics (==RedShift)</li><li>Azure Database Migration Service (==DMS)</li><li>Azure Cache (==Elastic Cache | Redis)</li></ul><ul class="notes"><li>Azure Cosmos DB: Multimodal API based (NoSQL / SQL / Cassandra / graph) | geo-redundant | single digit millisecond response times | expensive! | JSON like data. If complex queries are required then use Azure SQL Database</li></ul></article></div></section><section id="sec-networking" class="section"><h2 class="sechead" tabindex="0">Networking<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-networking-notes"><ul class="sub"><li>Azure vNET (Virtual Network | == VPC)</li><li>Subnet (Public / Private)</li><li>Network Security Groups (==SGs)</li><li>Application Security Groups (group specific for webserver / db / etc) – NSGs are at a subnet level – ASGs are a logical grouping within a subnet</li><li>Virtual Network Peering (== VPC Peering)</li><li>Azure LoadBalancer (==ELB | Layer4) (only within same region)</li><li>Azure Application Gateway (==ELB | Layer 7)</li><li>Azure Front Door (same as above but global)</li><li>Azure DNS (==Route53)</li><li>Azure Traffic Manager (for routing DNS traffic based on …) (global)</li><li>Site-to-Site VPN Connection (Virtual Network Gateway) – Entire On Prem data center / client workstations need to connect to Azure virtual network using private IPs</li><li>Point-to-Site VPN Connection - client workstations need to connect to Azure Virtual Network  – temp…example consultants need access for short time</li><li>Azure Express Route (==Direct Connect | 50MB to 10GB)</li><li>Virtual WAN</li><li>Azure Connection (VPN between 2 Azure local n/w using IPSec)</li><li>Azure Content Delivery Network</li></ul></article></div></section><section id="sec-application-integration" class="section"><h2 class="sechead" tabindex="0">Application Integration<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-application-integration-notes"><ul class="sub"><li>Azure Notifications Hub (==SNS?)</li><li>Azure API Apps (== API Manager)</li><li>Azure Service Bus (Messaging Pub/Sub)</li><li>Azure Stream Analytics (==Kinesis Analytics)</li><li>Azure API Management (== also API Manager)</li><li>Azure Queue Storage (==SQS?)</li><li>Azure Logic Apps (== StepFunctions / Simple Workflow Service)</li></ul></article></div></section><section id="sec-analytics" class="section"><h2 class="sechead" tabindex="0">Analytics<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-analytics-notes"><ul class="sub"><li>Azure Stream Analytics (==Kinesis Analytics)</li><li>Azure Synapse Analytics (==RedShift)</li><li>Azure HDInsight (==EMR | run OSS like Hadoop, Kafka, Spark)</li><li>Azure Databricks (Spark based analytics optimized for Azure)</li><li>Data Lake Analytics</li><li>Azure IotHub</li><li>Azure Machine Learning Service</li><li>Azure ML Studio</li><li>Personalizer</li><li>Translator (multi language translation)</li><li>Anomaly Detector</li><li>Azure Bot Service</li><li>Form Recognizer (OCR)</li><li>Computer Vision</li><li>Language (NLP/Voice Recognition)</li><li>QnA Maker</li><li>Text Analytics</li><li>Content Moderator</li><li>Face</li></ul></article></div></section><section id="sec-security" class="section"><h2 class="sechead" tabindex="0">Security<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-security-notes"><ul class="sub"><li>Azure Active Directory (User | Groups | Service Principals) (MFA)</li><li>Azure RBAC (similar to IAM – who can do what on a resource - example crud operations on a S3 bucket)</li><li>Azure Policies (ensures that resource state is compliant to your business rules without concern for who made the change or who has permission to make a change.</li><li>Azure KeyVault</li><li>Azure DDoS Protection</li><li>Azure Firewall</li><li>Azure Security Center (score / recommendations / Regulatory Compliance)</li><li>Azure Sentinel (e2e / log data collection / security analysis across resources)</li></ul></article></div></section><section id="sec-developer-mobile-tools" class="section"><h2 class="sechead" tabindex="0">Developer / Mobile Tools<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-developer-mobile-tools-notes"><ul class="sub"><li>Azure SignalR</li><li>Azure App Service (==BeanStalk | Java, .Net, NodeJS, Python, etc)</li><li>Visual Studio (IDE)</li><li>Xamarin (Mobile app development using .NET)</li></ul></article></div></section><section id="sec-azure-devops" class="section"><h2 class="sechead" tabindex="0">Azure DevOps<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-azure-devops-notes"><ul class="sub"><li>Azure Boards (like JIRA)</li><li>Azure Repos (Git Repo)</li><li>Azure Build Pipelines (like Jenkins for CI)</li><li>Azure Release Pipelines (like Jenkins for CD)</li><li>Azure Artifacts</li><li>Azure Test Plans (Selenium Maybe?)</li><li>Azure DevTest Labs (easily provision demo, load test, training, etc videos)</li><li>Azure Resource Manager (==Cloud Formation)</li><li>Azure QuickStart (library of pre-made ARM templates)</li><li>Azure Activity Monitor / Alerts (==CloudWatch)</li><li>Azure Application Insights</li><li>Azure Log Analytics (agents can be installed both on-prem and cloud servers)</li><li>Azure Advisor (==Trust Advisor)</li><li>Azure Blueprints (say company wide or department wide specs for creating resources that adhere to certain requirements and standards)</li></ul></article></div></section><section id="sec-miscellaneous" class="section"><h2 class="sechead" tabindex="0">Miscellaneous<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-miscellaneous-notes"><ul class="notes"><li>Azure Arc: direct connection to AWS or GCP to facilitate multi-cloud environments</li><li>Azure Cloud Shell (Bash or PowerShell)</li><li>Mgmt Options: Portal or Azure CLI or PowerShell or Azure Mobile App (onphone!)</li><li>Azure Service credits if SLA is not met</li></ul><ul class="sub"><li>&lt; 99.9 then 10%</li><li>&lt; 99 then 25%</li><li>&lt; 95 then 100%</li></ul><ul class="notes"><li>Azure Support Plans:</li></ul><ul class="sub"><li>Basic</li><li>Developer</li><li>Standard</li><li>Professional Direct</li></ul><ul class="notes"><li>Azure Cost Management: Actual usage costs | Pricing Calculator: Estimated costs | TCO Calculator: Cost Savings for On-Prem to Cloud Migration</li><li>The region for the resources in the resource group are not dependent on the region defined for the resource group. The resources can be in a different region from the region defined for the resource group.</li><li>The resources in the resource group would not automatically inherit the tags defined at the resource group level</li><li>The IAM permissions defined at the resource group level would be inherited by resources defined in that resource group.</li><li>You can also install Powershell on Linux based operating systems and thereby options for management are portal + powershell + CLI</li><li>All of the inbound data into Azure via an Azure Express Route connection is always free.</li><li>To get something from the Archive - You have to rehydrate the data, convert it to either the Hot or Cool access tier and then access the object.</li><li>Computing Overall SLA: The final SLA would the product of the SLA of the two services…i.e. 99.99 * 99.95 = 99.94</li><li>Microsoft would provide at least 12 months notification. This is as per the Modern Lifecycle policy for Azure products for discontinued services</li><li>At a time, an Azure subscription can only be linked to one Azure AD tenant. Even if the Azure subscription expires, the Azure AD tenant will still be present.</li></ul></article></div></section>
+</main>
+</div>
+<button class="btn" id="menuBtn" title="Menu">☰</button>
+<button id="toTop" title="Back to top">↑</button>
+<script>
+(function(){
+  // Theme
+  var root = document.documentElement, KEY='awssg-theme';
+  function apply(t){ root.setAttribute('data-theme', t); }
+  var saved = localStorage.getItem(KEY);
+  apply(saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  document.getElementById('themeToggle').onclick = function(){
+    var next = root.getAttribute('data-theme')==='dark' ? 'light':'dark';
+    apply(next); localStorage.setItem(KEY, next);
+  };
+
+  // Collapse sections
+  document.querySelectorAll('.sechead').forEach(function(h){
+    h.addEventListener('click', function(){ h.parentElement.classList.toggle('collapsed'); });
+  });
+  document.getElementById('expandAll').onclick = function(){
+    document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('collapsed'); });
+  };
+  document.getElementById('collapseAll').onclick = function(){
+    document.querySelectorAll('.section').forEach(function(s){ s.classList.add('collapsed'); });
+  };
+  // Expand target section on nav click
+  document.querySelectorAll('.navsec,.navtopic').forEach(function(a){
+    a.addEventListener('click', function(){
+      var el = document.querySelector(a.getAttribute('href'));
+      if(el){ var sec = el.closest('.section') || el; sec.classList.remove('collapsed'); }
+      if(innerWidth<=860) sidebar.classList.remove('open');
+    });
+  });
+
+  // Search
+  var input = document.getElementById('search'), meta = document.getElementById('searchmeta');
+  var topics = Array.prototype.slice.call(document.querySelectorAll('.topic'));
+  topics.forEach(function(t){ t.dataset.text = t.textContent.toLowerCase(); });
+  function unmark(el){
+    el.querySelectorAll('mark').forEach(function(m){
+      m.replaceWith(document.createTextNode(m.textContent));
+    });
+    el.normalize();
+  }
+  function markText(el, q){
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+      acceptNode:function(n){ return n.parentNode.nodeName==='SCRIPT'?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT; }
+    });
+    var nodes=[], n;
+    while((n=walker.nextNode())) if(n.nodeValue.toLowerCase().indexOf(q)>-1) nodes.push(n);
+    nodes.forEach(function(node){
+      var frag=document.createDocumentFragment(), txt=node.nodeValue, lo=txt.toLowerCase(), i=0, j;
+      while((j=lo.indexOf(q,i))>-1){
+        frag.appendChild(document.createTextNode(txt.slice(i,j)));
+        var m=document.createElement('mark'); m.textContent=txt.slice(j,j+q.length); frag.appendChild(m);
+        i=j+q.length;
+      }
+      frag.appendChild(document.createTextNode(txt.slice(i)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+  var lastQ='';
+  function doSearch(){
+    var q = input.value.trim().toLowerCase();
+    if(q===lastQ) return; lastQ=q;
+    var shown=0;
+    topics.forEach(function(t){ unmark(t); });
+    topics.forEach(function(t){
+      var hit = !q || t.dataset.text.indexOf(q)>-1;
+      t.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+      if(hit && q.length>=2) markText(t, q);
+    });
+    document.querySelectorAll('.section').forEach(function(s){
+      var any = s.querySelector('.topic:not(.hidden)');
+      s.style.display = any ? '' : 'none';
+      if(q) s.classList.remove('collapsed');
+    });
+    meta.textContent = q ? shown + ' topic' + (shown===1?'':'s') + ' match' : '';
+  }
+  var deb; input.addEventListener('input', function(){ clearTimeout(deb); deb=setTimeout(doSearch,120); });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='/' && document.activeElement!==input){ e.preventDefault(); input.focus(); input.select(); }
+    if(e.key==='Escape' && document.activeElement===input){ input.value=''; doSearch(); input.blur(); }
+  });
+
+  // Scrollspy
+  var links={};
+  document.querySelectorAll('.navtopic').forEach(function(a){ links[a.getAttribute('href').slice(1)]=a; });
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      var a = links[en.target.id]; if(!a) return;
+      if(en.isIntersecting){
+        document.querySelectorAll('.navtopic.active').forEach(function(x){x.classList.remove('active');});
+        a.classList.add('active');
+      }
+    });
+  }, {rootMargin:'0px 0px -75% 0px'});
+  topics.forEach(function(t){ obs.observe(t); });
+
+  // Back to top + mobile menu
+  var toTop=document.getElementById('toTop'), sidebar=document.getElementById('sidebar');
+  addEventListener('scroll', function(){ toTop.style.display = scrollY>600 ? 'block':'none'; }, {passive:true});
+  toTop.onclick=function(){ scrollTo({top:0,behavior:'smooth'}); };
+  document.getElementById('menuBtn').onclick=function(){ sidebar.classList.toggle('open'); };
+})();
+</script>
+</body>
+</html>

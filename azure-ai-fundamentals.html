@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure AI Fundamentals Study Guide</title>
+<meta name="description" content="Microsoft Azure AI Fundamentals certification study notes — ML, computer vision, NLP, conversational AI.">
+<style>
+:root{
+  --bg:#f0f7fc; --panel:#ffffff; --text:#1c2430; --muted:#54677a; --border:#d6e6f2;
+  --accent:#2e8fd4; --accent-soft:#e3f2fc; --link:#1b6fb5; --code-bg:#eaf3fa;
+  --mark:#ffe58a; --shadow:0 1px 3px rgba(30,80,130,.08);
+}
+[data-theme="dark"]{
+  --bg:#0f1a24; --panel:#17252f; --text:#dde8f0; --muted:#8aa0b3; --border:#24394a;
+  --accent:#5db4ec; --accent-soft:#153349; --link:#6cb8ee; --code-bg:#1c2e3d;
+  --mark:#8a6d1a; --shadow:0 1px 3px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:1rem}
+body{margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.55; font-size:15.5px}
+a{color:var(--link); text-decoration:none}
+
+/* Layout */
+.wrap{display:flex; min-height:100vh}
+.sidebar{width:280px; flex-shrink:0; position:sticky; top:0; height:100vh; overflow-y:auto;
+  background:var(--panel); border-right:1px solid var(--border); padding:1rem .9rem 2rem; scrollbar-width:thin}
+main{flex:1; min-width:0; max-width:980px; padding:1.5rem 2.2rem 5rem}
+
+/* Sidebar */
+.brand{font-weight:700; font-size:1.02rem; margin:.2rem 0 1rem; display:flex; align-items:center; gap:.5rem}
+.brand .awslogo{color:var(--accent); font-size:1.25rem}
+.searchbox{position:relative; margin-bottom:.6rem}
+.searchbox input{width:100%; padding:.5rem .7rem .5rem 2rem; border:1px solid var(--border); border-radius:8px;
+  background:var(--bg); color:var(--text); font-size:.9rem; outline:none}
+.searchbox input:focus{border-color:var(--accent)}
+.searchbox svg{position:absolute; left:.6rem; top:50%; transform:translateY(-50%); width:14px; height:14px; stroke:var(--muted)}
+.searchmeta{font-size:.75rem; color:var(--muted); min-height:1.1em; margin-bottom:.5rem}
+.navgroup{margin-bottom:.35rem}
+.navsec{display:block; font-weight:700; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--text); padding:.4rem .5rem .2rem}
+.navsec:hover{color:var(--accent)}
+.navtopics{border-left:2px solid var(--border); margin-left:.55rem}
+.navtopic{display:block; padding:.18rem .6rem; font-size:.86rem; color:var(--muted); border-left:2px solid transparent; margin-left:-2px}
+.navtopic:hover{color:var(--text)}
+.navtopic.active{color:var(--accent); border-left-color:var(--accent); font-weight:600}
+.sidefoot{margin-top:1rem; display:flex; gap:.4rem; flex-wrap:wrap}
+.btn{border:1px solid var(--border); background:var(--panel); color:var(--muted); border-radius:7px;
+  padding:.3rem .6rem; font-size:.75rem; cursor:pointer}
+.btn:hover{color:var(--text); border-color:var(--accent)}
+
+/* Header row */
+.pagehead{display:flex; align-items:baseline; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:.3rem}
+.pagehead h1{font-size:1.55rem; margin:0}
+.pagehead .sub{color:var(--muted); font-size:.9rem; margin:0 0 1.2rem}
+#themeToggle{font-size:1rem; line-height:1; padding:.35rem .55rem}
+
+/* Sections & topics */
+.section{margin-top:1.6rem}
+.sechead{display:flex; align-items:center; gap:.5rem; font-size:1.18rem; letter-spacing:.04em; text-transform:uppercase;
+  color:var(--accent); border-bottom:2px solid var(--accent); padding-bottom:.3rem; cursor:pointer; user-select:none; margin:0 0 .9rem}
+.sechead .chev{margin-left:auto; transform:rotate(90deg); transition:transform .18s; font-size:1.3rem; color:var(--muted)}
+.section.collapsed .chev{transform:rotate(0deg)}
+.section.collapsed .secbody{display:none}
+.topic{background:var(--panel); border:1px solid var(--border); border-radius:10px; box-shadow:var(--shadow);
+  padding:1rem 1.25rem; margin-bottom:1rem}
+.topic h3{margin:.1rem 0 .6rem; font-size:1.02rem; display:flex; align-items:baseline; gap:.6rem; flex-wrap:wrap}
+.topic h3 .subtitle{font-weight:400; font-size:.82rem; color:var(--muted)}
+.topic.hidden{display:none}
+
+/* Content */
+ul.notes{margin:.3rem 0; padding-left:1.15rem}
+ul.notes li{margin:.28rem 0}
+ul.notes li::marker{color:var(--accent)}
+ul.sub{margin:.3rem 0 .3rem .5rem; padding-left:1.3rem}
+ul.sub li{margin:.15rem 0; font-size:.95em}
+ul.sub li::marker{color:var(--muted)}
+p.plain{margin:.45rem 0}
+.topic h4{font-size:.92rem; margin:.9rem 0 .3rem; color:var(--accent)}
+.cont{color:var(--muted); font-size:.92em; margin:.15rem 0 0 .1rem}
+p.cont{margin:.3rem 0 .3rem 1.15rem}
+ol.steps{margin:.3rem 0; padding-left:1.4rem}
+ol.steps li{margin:.22rem 0}
+.sublabel{font-weight:700; font-size:.85rem; margin:.7rem 0 .15rem; color:var(--text)}
+pre.diagram{background:var(--code-bg); border:1px solid var(--border); border-radius:8px; padding:.6rem .8rem;
+  font-size:.82rem; overflow-x:auto; margin:.5rem 0}
+.tablewrap{overflow-x:auto; margin:.6rem 0}
+table{border-collapse:collapse; width:100%; font-size:.88rem}
+th,td{border:1px solid var(--border); padding:.45rem .6rem; text-align:left; vertical-align:top}
+th{background:var(--accent-soft); color:var(--text); font-weight:700}
+[data-theme="dark"] th{background:var(--accent-soft)}
+tbody tr:nth-child(even){background:color-mix(in srgb, var(--border) 25%, transparent)}
+figure{margin:.8rem 0}
+figure img{max-width:100%; border:1px solid var(--border); border-radius:8px; background:#fff}
+mark{background:var(--mark); color:inherit; border-radius:2px; padding:0 1px}
+
+/* Back to top */
+#toTop{position:fixed; right:1.2rem; bottom:1.2rem; width:38px; height:38px; border-radius:50%;
+  border:1px solid var(--border); background:var(--panel); color:var(--muted); font-size:1.1rem; cursor:pointer;
+  box-shadow:var(--shadow); display:none}
+#toTop:hover{color:var(--accent)}
+
+/* Mobile */
+#menuBtn{display:none}
+@media (max-width:860px){
+  .sidebar{position:fixed; z-index:20; left:0; top:0; transform:translateX(-100%); transition:transform .2s; width:270px}
+  .sidebar.open{transform:none; box-shadow:0 0 30px rgba(0,0,0,.3)}
+  main{padding:1rem 1rem 4rem}
+  #menuBtn{display:inline-block; position:fixed; z-index:21; left:.8rem; bottom:1.2rem; width:42px; height:42px;
+    border-radius:50%; font-size:1.15rem; box-shadow:var(--shadow)}
+}
+@media print{
+  .sidebar,#toTop,#menuBtn,#themeToggle{display:none!important}
+  main{max-width:none; padding:0}
+  .topic{break-inside:avoid; box-shadow:none}
+  .section.collapsed .secbody{display:block}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="sidebar" id="sidebar">
+  <div class="brand"><span class="awslogo">▲</span> AWS Study Guide</div>
+  <div class="searchbox">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    <input type="search" id="search" placeholder="Search notes…  ( / )" autocomplete="off">
+  </div>
+  <div class="searchmeta" id="searchmeta"></div>
+  <div class="navgroup"><a class="navsec" href="#sec-ai-fundamentals">AI Fundamentals</a><div class="navtopics"><a class="navtopic" href="#sec-ai-fundamentals-artificial-intelligence-workloads">Artificial Intelligence Workloads</a><a class="navtopic" href="#sec-ai-fundamentals-guiding-principles-for-responsible-ai">Guiding Principles for Responsible AI</a></div></div><div class="navgroup"><a class="navsec" href="#sec-computer-vision">Computer Vision</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-natural-language-processing">Natural Language Processing</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-conversational-ai">Conversational AI</a><div class="navtopics"></div></div><div class="navgroup"><a class="navsec" href="#sec-other">Other</a><div class="navtopics"><a class="navtopic" href="#sec-other-decision-support-anomaly-detector">Decision Support (Anomaly Detector)</a><a class="navtopic" href="#sec-other-knowledge-mining-azure-cognitive-search">Knowledge Mining (Azure Cognitive Search)</a></div></div>
+  <div class="sidefoot">
+    <button class="btn" id="expandAll">Expand all</button>
+    <button class="btn" id="collapseAll">Collapse all</button>
+  </div>
+</nav>
+<main>
+  <div class="pagehead">
+    <h1>Azure AI Fundamentals Study Guide</h1>
+    <button class="btn" id="themeToggle" title="Toggle theme">◐</button>
+  </div>
+  <p class="sub">Condensed exam notes — machine learning, computer vision, NLP, conversational AI and more. Use the sidebar or press <b>/</b> to search.</p>
+  <section id="sec-ai-fundamentals" class="section"><h2 class="sechead" tabindex="0">AI Fundamentals<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-ai-fundamentals-notes"><ul class="notes"><li>Artificial Intelligence is the ability of a machine to perceive an environment and choose actions that maximize the likelihood of achieving a goal</li></ul></article><article class="topic" id="sec-ai-fundamentals-artificial-intelligence-workloads"><h3>Artificial Intelligence Workloads</h3><ul class="sub"><li>Prediction / Forecasting</li><li>Anomaly Detection</li><li>Computer Vision (both images and videos)</li><li>Natural Language Processing (both written and spoken language)</li><li>Conversational AI</li><li>Other (Decision Support / Knowledge Mining)</li></ul><ul class="notes"><li>Prediction vs Forecasting:</li></ul><p class="plain">A forecast refers to a calculation or an estimation which uses data from previous events, combined with recent trends to come up a future event outcome. Forecasting uses mathematical formulas and as a result, they are free from personal as well as intuition bias</p><p class="plain">On the other hand, a prediction is an actual act of indicating that something will happen in the future with or without prior information.</p><p class="plain">In short, all forecasts are predictions but not all predictions are forecasts. Anyone can do a prediction since it does not require any special skills but for one to do forecasting he/she requires special skills.</p></article><article class="topic" id="sec-ai-fundamentals-guiding-principles-for-responsible-ai"><h3>Guiding Principles for Responsible AI</h3><ul class="sub"><li>Fairness</li><li>Inclusiveness</li><li>Reliability and Safety</li><li>Privacy and Security</li><li>Transparency</li><li>Accountability</li></ul><p class="plain">Fairness: AI systems should treat all people fairly without incorporating any bias based on gender, ethnicity, or other factors that might result in an unfair advantage or disadvantage to specific groups of applicants.</p><p class="plain">Inclusiveness: AI should bring benefits to all parts of society, regardless of physical ability, gender, sexual orientation, ethnicity, or other factors.</p><p class="plain">Note difference with fairness…fairness is more to do with not being fair against a certain segment of users i.e. the segment was part of the training but there is a situation of implicit bias which causes the inferencing to be unfair. Inclusiveness also implies not being able to provide a fair outcome but in this case there is no bias…certain segments are flat out not included for consideration. Example…Asian accents during voice recognition training or leaving out visually impaired and deaf or hard of hearing</p><p class="plain">Reliability and Safety: AI systems should operate reliably, safely, and consistently. Ensure that AI systems operate as they were originally designed, respond to unanticipated conditions and resist harmful manipulations.</p><p class="plain">Privacy and Security: AI systems should be secure and respect privacy.</p><p class="plain">Transparency: It is critical that people understand how AI system has made decisions. Users should be made fully aware of the purpose of the system, how it works, and what limitations may be expected.</p><p class="plain">Accountability: People should be accountable for AI systems. Designers and developers of AI-based solution should work within a framework of governance and organizational principles that ensure the solution meets ethical and legal standards that are clearly defined</p><ul class="notes"><li>Azure AI Offerings</li></ul><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image1.jpg" alt="Diagram"></figure><ul class="notes"><li>Rule Based vs Machine Learning bases Models: Rules are static and might be a good choice when dataset is small – Deep domain expertise is needed to come up with the rules. ML Rules are dynamic…i.e. get altered based on the data. Data combined with the appropriate ML model/algorithm selection determines the outcome.</li><li>Machine Learning Super High level types:</li></ul><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image2.jpg" alt="Diagram"></figure><ul class="notes"><li>Regression: Regression is a form of machine learning that is used to predict a numeric label based on an item&#x27;s features</li><li>Get Started on Azure: Create Machine Learning workspace → Apart from basic info these 4 resources need to be created (Storage Account + Key Vault + App Insights + Container Registry) → then launch ML Studio → Create Compute Clusters</li></ul><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image3.jpg" alt="Diagram"></figure><ul class="notes"><li>Last 2 steps in the sequence are scoring and evaluating the model. Scoring is essentially viewing the results. Evaluating is deeper analysis of the results / fit</li></ul><p class="plain">Few Regression Performance metrices:</p><ul class="sub"><li>Mean Absolute Error (MAE):  the absolute difference between actual and predicted values. Lower the value the better</li></ul><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image4.jpg" alt="Diagram"></figure><p class="plain">Mean Squared Error (MSE): Same but use the squares so this can be used as a loss function i.e. cases in which predictions are negative and can skew</p><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image5.jpg" alt="Diagram"></figure><p class="plain">Root Mean Squared Error (RMSE): simple squared root of above to have same / smaller units as original</p><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image6.jpg" alt="Diagram"></figure><h4>Root Mean Squaerd Log Error Error (RMSLE)</h4><h4>Coefficient of Determination (R2)</h4><ul class="notes"><li>Classification: refers to a predictive modeling problem where a class label is predicted for a given example of input data. The input data can be both structured and unstructured</li></ul><p class="plain">Types of Classification:</p><ul class="sub"><li>Binary Classification</li><li>Multi-Class Classification</li><li>Multi-Label Classification (same as prev but multiple labels detected in same input – say taxi and a building from a single pic)</li><li>Imbalanced Classification</li></ul><p class="plain">Confusion Matrix is a performance measurement for the machine learning classification problems where the output can be two or more classes.</p><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image7.jpg" alt="Diagram"></figure><p class="plain">Related→ Sensitivity vs Specificity</p><ul class="sub"><li>Sensitivity is the ability of a test to correctly identify those patients with the disease.</li><li>Specificity is the ability of a clinical test to correctly identify those patients without the disease.</li></ul><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image8.jpg" alt="Diagram"></figure><p class="plain">Classification Evaluation Metrics:</p><ul class="sub"><li>Accuracy + Precision + Recall:</li></ul><p class="plain">Accuracy: Accuracy simply measures how often the classifier correctly predicts. We can define accuracy as the ratio of the number of correct predictions and the total number of predictions.</p><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image9.jpg" alt="Diagram"></figure><p class="plain">Accuracy, by itself is helpful where the classes are balanced but can be misleading in cases where classes are imbalanced. i.e. if training contains 99% dog images and 1% cat images then given test data with primarily dog pic accuracy will be great but still the model will fail for all cats. Or another example of asteroid hitting the earth will 99.X% of the time be negative and accurate but might miss the actual times that it does happen…so here the model is still highly accurate but lacks precision.</p><p class="plain">Another example is detecting fraudulent transactions. The system may have 99.99% accuracy but the one transaction that was missed might cost millions of dollars</p><p class="plain">Precision: Precision explains how many of the correctly predicted cases actually turned out to be positive. Precision is useful in the cases where False Positive is a higher concern than False Negatives</p><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image10.jpg" alt="Diagram"></figure><p class="plain">Basically use when you want to be very sure of the prediction look at precision. Say you are using ML to predict who to give PPE loans for a bunch of apps, you should give only to those who would qualify and not even one of the other (non qualifiables)</p><p class="plain">Recall (Sensitivity): Recall explains how many of the actual positive cases we were able to predict correctly with our model. It is a useful metric in cases where False Negative is of higher concern than False Positive</p><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image11.jpg" alt="Diagram"></figure><pre class="diagram">Example detecting cancer, it is ok if we have some false positives (will be retested don’t sweat) but there should be no false negatives i.e. has cancer but undetected</pre><ul class="sub"><li>F1 Score: It gives a combined idea about Precision and Recall metrics. It is maximum when Precision is equal to Recall.</li></ul><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image12.jpg" alt="Diagram"></figure><p class="plain">If you are a cop and you want to catch criminals, you want to be sure that the person you catch is a criminal (Precision) and you also want to capture as many criminals (Recall) as possible. The F1 score manages this tradeoff.</p><h4>Log Loss or Cross Entropy Loss</h4><h4>AUC</h4><ul class="notes"><li>Clustering: Clustering is a form of machine learning that is used to group similar items into clusters based on their features.</li></ul><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image13.jpg" alt="Diagram"></figure><ul class="notes"><li>Clustering Performance Metrices:</li></ul><p class="plain">Average Distance to Other Center: This indicates how close, on average, each point in the cluster is to the centroids of all other clusters.</p><p class="plain">Average Distance to Cluster Center: This indicates how close, on average, each point in the cluster is to the centroid of the cluster.</p><p class="plain">Number of Points: The number of points assigned to the cluster.</p><p class="plain">Maximal Distance to Cluster Center: The maximum of the distances between each point and the centroid of that point’s cluster. If this number is high, the cluster may be widely dispersed. This statistic in combination with the Average Distance to Cluster Center helps you determine the cluster’s spread.</p><ul class="notes"><li>Anomaly Detection: a machine learning based technique that analyzes data over time (i.e. time series data) and identifies unusual changes.</li></ul><p class="plain">Example: Credit Card fraud detection, telemetry from airplane engines (airplanes as a whole), race cars, or pretty much anything that can send telemetry</p><ul class="notes"><li>Features (inputs to training and inferencing) and Labels (what is being predicted)</li><li>Feature Engineering (making up new columns, splitting, etc) and Feature Selection</li><li>Training vs Testing vs Validation Datasets</li><li>Azure Automated Machine Learning: Feed dataset and Azure finds which is the best ML model to utilize (only can do Classification, Regression and Time Series)</li><li>Azure Cognitive Service vs Azure Machine Learning Service (Studio): Cognitive Service is more off the shelf usage – ML Service / Studio you build / train</li><li>Note: Deploying inference pipelines to  Azure Container Instance (ACI) is useful for development and testing. For production, you should create an inference cluster, which provide an Azure Kubernetes Service (AKS) cluster that provides better scalability and security.</li><li>Azure AI Algorithms Cheat Sheet: https://docs.microsoft.com/en-us/azure/machine-learning/algorithm-cheat-sheet</li></ul></article></div></section><section id="sec-computer-vision" class="section"><h2 class="sechead" tabindex="0">Computer Vision<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-computer-vision-notes"><ul class="notes"><li>Computer Vision Solutions based on ML Models</li></ul><ul class="sub"><li>Image Classification and Image Analysis</li><li>Object Detection and Object Tracking</li><li>Sematic Segmentation</li><li>Face Detection, Analysis and Recognition</li><li>Optical Character Recognition (OCR)</li></ul><ul class="notes"><li>Azure Vision Offerings</li></ul><ul class="sub"><li>Computer Vision: Analyze images and videos and extract descriptions, tags, objects and text</li><li>Custom Vision: Train custom image classification and object detection models using your own images</li><li>Face Service: Build face detection and facial analysis solutions</li><li>Form Recognizer: Extract information from scanned forms and invoices</li><li>Optical Character Recognition: hand written / not digital</li></ul><p class="plain">Computer Vision: The Computer Vision service is a cognitive service in Microsoft Azure that provides pre-built computer vision capabilities. The service can analyze images, and return detailed information about an image and the objects it depicts.</p><p class="plain">Computer Vision service is bundled within Azure Cognitive Service umbrella. Use cognitive if using bunch of other services…mainly for administrative purposes</p><p class="plain">After Image Analysis the descriptive elements that the model spits out is called ‘tags’. With object detection you also get positional information i.e. bounding box with the resulting tags – these are (top, left, width and height).</p><p class="plain">Additionally, Computer Vision service can also perform Detecting Brands, Detecting Faces, Categorizing an Image, Detecting Domain Specific Content, OCT, detect images types, detect image color schemes, generate thumbnails and moderate content (detecting adult content or depict violent / gory scenes)</p><p class="plain">Custom Vision: Only two models supported here are Image Classification and Object Detection</p><p class="plain">Image classification: is a common workload in artificial intelligence (AI) applications. It harnesses the predictive power of machine learning to enable AI systems to identify real-world items based on images. Similar to non-image datasets To create an image classification model, you need data that consists of features and their labels.</p><p class="plain">Most modern image classification solutions are based on deep learning techniques that make use of convolutional neural networks (CNNs) to uncover patterns in the pixels that correspond to particular classes.</p><p class="plain">Common techniques used to train image classification models have been encapsulated into the Custom Vision cognitive service in Microsoft Azure; making it easy to train a model and publish it as a software service with minimal knowledge of deep learning techniques.</p><p class="plain">Training is standard…i.e. multiple images + tagging/ labelling them and giving to the model. To use a published model, you need the project ID, the model name, and the key and endpoint for the prediction resource.</p><ul class="notes"><li>Performance Benchmarks for Custom Vision / Image Classification:</li></ul><p class="plain">Precision: What percentage of the class predictions made by the model were correct? For example, if the model predicted that 10 images are oranges, of which eight were actually oranges, then the precision is 0.8 (80%).</p><p class="plain">Recall: What percentage of class predictions did the model correctly identify? For example, if there are 10 images of apples, and the model found 7 of them, then the recall is 0.7 (70%).</p><p class="plain">Average Precision (AP): An overall metric that takes into account both precision and recall).</p><p class="plain">Some potential uses: Product Identification + Disaster Investigation + Medical Diagnosis</p><p class="plain">Object Detection: Identify object + location – in essence extends Image Classification</p><p class="plain">Steps for training, performance metrices and inferencing are the same as Image Classification</p><ul class="notes"><li>With Custom Vision Service, 2 resources are created when doing training and prediction…if you use cognitive just a single service is created.</li></ul><p class="plain">Face Service: Face Detection + Face Analysis + Facial Recognition – specialized for faces. Microsoft also offers facial services as part of Computer Vision and Video Indexer (analyze faces in videos) but specialized service is the Face Service</p><p class="plain">Face currently supports the following functionality:</p><p class="plain">Face Detection</p><p class="plain">Face Verification</p><p class="plain">Find Similar Faces</p><p class="plain">Group faces based on similarities</p><p class="plain">Identify people</p><p class="plain">Can also detect other attributes like:</p><p class="plain">Age: a guess at an age</p><p class="plain">Blur: how blurred the face is (which can be an indication of how likely the face is to be the main focus of the image)</p><p class="plain">Emotion: what emotion is displayed</p><p class="plain">Exposure: aspects such as underexposed or over exposed and applies to the face in the image and not the overall image exposure</p><p class="plain">Facial hair: the estimated facial hair presence</p><p class="plain">Glasses: if the person is wearing glasses</p><p class="plain">Hair: the hair type and hair color</p><p class="plain">Head pose: the face&#x27;s orientation in a 3D space</p><p class="plain">Makeup: whether the face in the image has makeup applied</p><p class="plain">Noise: refers to visual noise in the image. If you have taken a photo with a high ISO setting for darker settings, you would notice this noise in the image. The image looks grainy or full of tiny dots that make the image less clear</p><p class="plain">Occlusion: determines if there may be objects blocking the face in the image</p><p class="plain">Smile: whether the person in the image is smiling</p><p class="plain">Some considerations for facial analysis:</p><p class="plain">image format - supported images are JPEG, PNG, GIF, and BMP</p><p class="plain">file size - 6 MB or smaller</p><p class="plain">face size range - from 36 x 36 up to 4096 x 4096. Smaller or larger faces will not be detected</p><p class="plain">other issues - face detection can be impaired by extreme face angles, occlusion (objects blocking the face such as sunglasses or a hand)</p><p class="plain">Form Recognizer: The Form Recognizer in Azure provides intelligent form processing capabilities that you can use to automate the processing of data in documents such as forms, invoices, and receipts. It combines state-of-the-art optical character recognition (OCR) with predictive models that can interpret form data by:</p><p class="plain">Matching field names to values.</p><p class="plain">Processing tables of data.</p><p class="plain">Identifying specific types of field, such as dates, telephone numbers, addresses, totals, and others.</p><ul class="sub"><li>Form Recognizer supports automated document processing through:</li></ul><p class="plain">A pre-built receipt model that is provided out-of-the-box, and is trained to recognize and extract data from sales receipts.</p><p class="plain">Custom models, which enable you to extract what are known as key/value pairs and table data from forms. Custom models are trained using your own data, which helps to tailor this model to your specific forms. Starting with only five samples of your forms, you can train the custom model</p><p class="plain">Similar to Computer Vision / Custom Vision services can be created as a separate service or under Azure Cognitive Services. And service can be accessed using a key and endpoint pair.</p><p class="plain">Pre-built models can currently do only English. If you want other languages, you need to do Custom. Some additional constraints –</p><p class="plain">Images must be JPEG, PNG, BMP, PDF, or TIFF formats</p><p class="plain">File size must be less than 50 MB</p><p class="plain">Image size between 50 x 50 pixels and 10000 x 10000 pixels</p><p class="plain">For PDF documents, no larger than 17 inches x 17 inches</p><ul class="notes"><li>Form Recognizer vs OCR: OCR is specific to just reading the text from handwritten or forms without any semantic context – Form Recognizer is a more specialized feature where you can additionally gather context, read tables, data type formats, etc</li></ul><p class="plain">Optical Character Recognition (OCR): OCR helps to read printed and handwritten text from digitized notes, forms and photographs.</p><p class="plain">Should add that OCR is a discipline where the areas of Computer Vision and NLP would intersect.</p><p class="plain">Some major areas where OCR is utilized –</p><p class="plain">Note taking</p><p class="plain">Digitizing forms, such as medical records or historical documents</p><p class="plain">Scanning printed or handwritten checks for bank deposits</p><ul class="notes"><li>The Computer Vision service provides two application programming interfaces (APIs) that you can use to read text in images:</li></ul><p class="plain">OCR API  (for smaller workloads / not too much text)</p><p class="plain">Read API (larger workloads)</p><ul class="notes"><li>Mgmt Console Screen Shot / All / Cognitive Services</li></ul><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image14.jpg" alt="Diagram"></figure></article></div></section><section id="sec-natural-language-processing" class="section"><h2 class="sechead" tabindex="0">Natural Language Processing<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-natural-language-processing-notes"><ul class="notes"><li>Natural language processing strives to build machines that understand and respond to text or voice data—and respond with text or speech of their own—in much the same way humans do</li><li>Common NLP Features</li></ul><ul class="sub"><li>Key Phrase Extraction [TEXT]</li><li>Entity Recognition [TEXT]</li><li>Sentiment Analysis [TEXT]</li><li>Language Detection [TEXT]</li><li>Language Modeling [TEXT]</li><li>Speech Recognition and Synthesis [SPEECH ←→ TEXT]</li><li>Translation [TEXT &amp;&amp; SPEECH]</li></ul><ul class="notes"><li>Azure Services that provide above</li></ul><ul class="sub"><li>Language Service</li><li>Key Phrase Extraction</li><li>Entity Recognition</li><li>Sentiment Analysis</li><li>Language Detection</li><li>Language Modeling</li><li>Speech Service</li><li>Speech Recognition and Synthesis</li><li>Translation</li><li>Translator Text Service</li><li>Text Translation</li></ul><ul class="notes"><li>NLP Features / Azure Services</li></ul><p class="plain">Language Service</p><p class="plain">Key Phrase Extraction: Key phrase extraction is the concept of evaluating the text of a document, or documents, and then identifying the main talking points of the document(s).</p><p class="plain">Entity Recognition: Detect entities in a text…Entities of interest would be Person, Location, Organization, Quantity, DateTime, URL, Email, US-based phone, IP Address, etc. Service supports entity linking to a specific reference (say a Wikipedia link)</p><p class="plain">Sentiment Analysis: Detect Sentiment: Key phrase extraction is the concept of evaluating the text of a document, or documents, and then identifying the main talking points of the document(s).</p><h4>Language Detection</h4><p class="plain">Spits out</p><ul class="sub"><li>The language name (for example &quot;English&quot;).</li><li>The ISO 6391 language code (for example, &quot;en&quot;).</li><li>A score indicating a level of confidence in the language detection.</li></ul><p class="plain">If the sentence contains a mix of languages, then the predominant language is chosen, the confidence might go low based on this. In case not able to detect then unknown is returned w/ a score of NaN.</p><p class="plain">Language Modeling / Conversation Language Understanding: This relates to understanding the context – semantics than just the words. Three core concepts need to be taken into account for this...</p><ul class="sub"><li>Utterances: something the user might say</li><li>Entities: an item that the utterance refers to i.e. the entity</li><li>Intents: the goal</li></ul><p class="plain">To create an application with Conversational Language Understanding you need to</p><ul class="sub"><li>Author the model (define utterances, entities and intents)</li><li>Publish model for Entity prediction</li></ul><p class="plain">Defining entities:</p><ul class="sub"><li>Machine-Learned: Entities that are learned by your model during training from context in the sample utterances you provide.</li><li>List: Entities that are defined as a hierarchy of lists and sublists. For example, a device list might include sublists for light and fan. For each list entry, you can specify synonyms, such as lamp for light.</li><li>RegEx: Entities that are defined as a regular expression that describes a pattern - for example, you might define a pattern like [0-9]{3}-[0-9]{3}-[0-9]{4} for telephone numbers of the form 555-123-4567.</li><li>Pattern.any: Entities that are used with patterns to define complex entities that may be hard to extract from sample utterances.</li></ul><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image15.jpg" alt="Diagram"></figure><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image16.jpg" alt="Diagram"></figure><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image17.jpg" alt="Diagram"></figure><figure><img loading="lazy" src="assets/azure-ai-fundamentals/image18.jpg" alt="Diagram"></figure><p class="plain">Speech Service</p><h4>Speech Recognition and Synthesis</h4><ul class="sub"><li>Speech-to-Text API -&gt; Recognition. trained by Microsoft, but you do have the option to custom train</li><li>can be real time</li><li>can be batch</li><li>Text-to-Speech API -&gt; Synthesis.</li></ul><h4>Translation</h4><ul class="sub"><li>Translator service supports only text-to-text translation.</li><li>Uses Neural Machine Translation (NMT) model for translation.</li><li>Supports more than 60 languages</li><li>Need to mention from to using ISO 639-1 language codes</li><li>You can also mention cultural variants for example en-US vs en-GB</li></ul><p class="plain">If translation with Speech is involved, then this comes under the Speech Service. The translations can be</p><ul class="sub"><li>Speech-to-Text translation</li><li>Text-to-Speech translation</li><li>Speech-to-Speech translation</li></ul></article></div></section><section id="sec-conversational-ai" class="section"><h2 class="sechead" tabindex="0">Conversational AI<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-conversational-ai-notes"><ul class="notes"><li>Using Language Service – older name QandA maker. Static questions and answers from a knowledge base for questions and answers.</li></ul><p class="plain">Source can be a PDF, Word Document, or a web page, or entered manually.</p><p class="plain">Language Service is used for creating the knowledge base.</p><ul class="notes"><li>Using Azure Bot Service – This service provides a framework for developing, publishing and managing bots on Azure. For client apps to access the knowledge base you need -</li></ul><ul class="sub"><li>The knowledge base ID</li><li>The knowledge base endpoint</li><li>The knowledge base authorization key</li></ul><ul class="notes"><li>Once knowledge base is ready you can create a custom bot by using Microsoft Bot Framework SDK or bys using automatic bot creation functionality. When your bot is ready to be delivered to users, you can connect it to multiple channels; making it possible for users to interact with it through web chat, email, Microsoft Teams, and other common communication media.</li></ul></article></div></section><section id="sec-other" class="section"><h2 class="sechead" tabindex="0">Other<span class="chev">›</span></h2><div class="secbody"><article class="topic" id="sec-other-decision-support-anomaly-detector"><h3>Decision Support (Anomaly Detector)</h3></article><article class="topic" id="sec-other-knowledge-mining-azure-cognitive-search"><h3>Knowledge Mining (Azure Cognitive Search)</h3><p class="plain">Knowledge mining is the term used to describe solutions that involve extracting information from large volumes of often unstructured data.</p><p class="plain">Azure Cognitive Search is a search solution that has built in indexing options. An Indexer is utilized to convert data in all formats to a JSON based format for storage. Other AI services can be used for the above purpose i.e. Speech service to get text from audio file, OCR to get text from a form/note, etc.</p><p class="plain">Indexer (converts to JSONs) + uses other AI tools to store indexed data in an index</p><p class="plain">Before using Search service, the data must be extracted into an Azure data source. Options are –</p><ul class="sub"><li>Azure SQL Database</li><li>SQL Server on an Azure VM</li><li>Cosmos DB</li><li>Azure Blob storage</li><li>Azure Table storage</li></ul></article></div></section>
+</main>
+</div>
+<button class="btn" id="menuBtn" title="Menu">☰</button>
+<button id="toTop" title="Back to top">↑</button>
+<script>
+(function(){
+  // Theme
+  var root = document.documentElement, KEY='awssg-theme';
+  function apply(t){ root.setAttribute('data-theme', t); }
+  var saved = localStorage.getItem(KEY);
+  apply(saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  document.getElementById('themeToggle').onclick = function(){
+    var next = root.getAttribute('data-theme')==='dark' ? 'light':'dark';
+    apply(next); localStorage.setItem(KEY, next);
+  };
+
+  // Collapse sections
+  document.querySelectorAll('.sechead').forEach(function(h){
+    h.addEventListener('click', function(){ h.parentElement.classList.toggle('collapsed'); });
+  });
+  document.getElementById('expandAll').onclick = function(){
+    document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('collapsed'); });
+  };
+  document.getElementById('collapseAll').onclick = function(){
+    document.querySelectorAll('.section').forEach(function(s){ s.classList.add('collapsed'); });
+  };
+  // Expand target section on nav click
+  document.querySelectorAll('.navsec,.navtopic').forEach(function(a){
+    a.addEventListener('click', function(){
+      var el = document.querySelector(a.getAttribute('href'));
+      if(el){ var sec = el.closest('.section') || el; sec.classList.remove('collapsed'); }
+      if(innerWidth<=860) sidebar.classList.remove('open');
+    });
+  });
+
+  // Search
+  var input = document.getElementById('search'), meta = document.getElementById('searchmeta');
+  var topics = Array.prototype.slice.call(document.querySelectorAll('.topic'));
+  topics.forEach(function(t){ t.dataset.text = t.textContent.toLowerCase(); });
+  function unmark(el){
+    el.querySelectorAll('mark').forEach(function(m){
+      m.replaceWith(document.createTextNode(m.textContent));
+    });
+    el.normalize();
+  }
+  function markText(el, q){
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+      acceptNode:function(n){ return n.parentNode.nodeName==='SCRIPT'?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT; }
+    });
+    var nodes=[], n;
+    while((n=walker.nextNode())) if(n.nodeValue.toLowerCase().indexOf(q)>-1) nodes.push(n);
+    nodes.forEach(function(node){
+      var frag=document.createDocumentFragment(), txt=node.nodeValue, lo=txt.toLowerCase(), i=0, j;
+      while((j=lo.indexOf(q,i))>-1){
+        frag.appendChild(document.createTextNode(txt.slice(i,j)));
+        var m=document.createElement('mark'); m.textContent=txt.slice(j,j+q.length); frag.appendChild(m);
+        i=j+q.length;
+      }
+      frag.appendChild(document.createTextNode(txt.slice(i)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+  var lastQ='';
+  function doSearch(){
+    var q = input.value.trim().toLowerCase();
+    if(q===lastQ) return; lastQ=q;
+    var shown=0;
+    topics.forEach(function(t){ unmark(t); });
+    topics.forEach(function(t){
+      var hit = !q || t.dataset.text.indexOf(q)>-1;
+      t.classList.toggle('hidden', !hit);
+      if(hit) shown++;
+      if(hit && q.length>=2) markText(t, q);
+    });
+    document.querySelectorAll('.section').forEach(function(s){
+      var any = s.querySelector('.topic:not(.hidden)');
+      s.style.display = any ? '' : 'none';
+      if(q) s.classList.remove('collapsed');
+    });
+    meta.textContent = q ? shown + ' topic' + (shown===1?'':'s') + ' match' : '';
+  }
+  var deb; input.addEventListener('input', function(){ clearTimeout(deb); deb=setTimeout(doSearch,120); });
+  document.addEventListener('keydown', function(e){
+    if(e.key==='/' && document.activeElement!==input){ e.preventDefault(); input.focus(); input.select(); }
+    if(e.key==='Escape' && document.activeElement===input){ input.value=''; doSearch(); input.blur(); }
+  });
+
+  // Scrollspy
+  var links={};
+  document.querySelectorAll('.navtopic').forEach(function(a){ links[a.getAttribute('href').slice(1)]=a; });
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      var a = links[en.target.id]; if(!a) return;
+      if(en.isIntersecting){
+        document.querySelectorAll('.navtopic.active').forEach(function(x){x.classList.remove('active');});
+        a.classList.add('active');
+      }
+    });
+  }, {rootMargin:'0px 0px -75% 0px'});
+  topics.forEach(function(t){ obs.observe(t); });
+
+  // Back to top + mobile menu
+  var toTop=document.getElementById('toTop'), sidebar=document.getElementById('sidebar');
+  addEventListener('scroll', function(){ toTop.style.display = scrollY>600 ? 'block':'none'; }, {passive:true});
+  toTop.onclick=function(){ scrollTo({top:0,behavior:'smooth'}); };
+  document.getElementById('menuBtn').onclick=function(){ sidebar.classList.toggle('open'); };
+})();
+</script>
+</body>
+</html>
